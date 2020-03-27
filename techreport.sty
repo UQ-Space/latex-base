@@ -1,0 +1,257 @@
+\NeedsTeXFormat{LaTeX2e}
+\RequirePackage{expl3}                                     % - Load LaTeX3 packages
+
+
+%% ================================================================================
+%%                            ~~~ CLASS META-INFO ~~~                             
+%% ________________________________________________________________________________
+
+\ProvidesExplPackage
+  {techreport}                                                      % - Name
+  {2020/03/27}                                                      % - Date
+  {1.0.2}                                                           % - Version
+  {Package list for technical reports in LaTeX}                     % - Description
+    
+%% ================================================================================
+
+  
+  
+%% ============================= General packages =============================
+
+\usepackage [ utf8 ] { inputenc   }
+
+\usepackage          { parskip    }    % Improves paragraph spacing
+\usepackage          { geometry   } 
+ 
+\usepackage          { microtype  }    % Tweak font spacing for aesthetics
+
+\usepackage          { multicol   }    % Multiple columns Environment
+\usepackage          { acro       }    % Acronyms and list-of-acronyms
+\usepackage          { genmpage   }    % Minipage options
+\usepackage          { changepage }
+
+\usepackage          { pdfpages   }    % Allows inclusion of non-tex pdfs
+
+%% ----------------------------- General commands -----------------------------
+
+% -- Create possessive endings for acronyms 
+
+\ProvideAcroEnding { possessive } { 's } { 's }
+\ProvideAcroCommand \acg {
+    \acro_possessive:
+    \acro_use:n { #1 }
+}
+
+\linespread{1.15}                      % Nicer linespreading
+\setcounter{tocdepth}{3}               % Count 3 levels within TOC
+
+\NewDocumentCommand \frontmatter { }{
+    \pagenumbering{roman}
+    \pagestyle{simple}
+}
+
+\NewDocumentCommand \mainmatter { }{
+    \pagenumbering{arabic}
+    \pagestyle{fancy}
+}
+
+%% ============================================================================
+
+
+
+%% ========================= Maths & Science packages =========================
+
+\usepackage{
+    amsmath, amssymb,
+    amsthm,  amsfonts
+}
+\usepackage[                           % Consistent formatting of SI Units
+    per-mode=symbol,                   % ~ e.g. \SI{8314}{\kJ\per\kg\per\K},
+    separate-uncertainty=true,         % ~      \num{1e6}, \ang{45}, etc...
+    multi-part-units=single
+]                     { siunitx     }
+\usepackage           { skmath      }  % Extensive simple math commands
+\usepackage           { mathtools   }  % Space tweaking within maths
+\usepackage           { chemformula }  % Chemical equations -> e.g. \ch{H20}
+\usepackage           { bm          }  % Bold maths symbols -> e.g. \bm{\alpha}
+\usepackage           { xfrac       }  % Use \sfrac{}{} for slanted fractions
+\usepackage           { esint       }  % Gives nicer integration symbols
+\usepackage           { cancel      }  % Gives \cancelto{val}{var}
+\usepackage [ super ] { nth         }  % Ordinal indicators, with superscript
+                                       % ~ e.g \nth{1} gives 1^st
+
+%% ------------------------- Maths & Science commands -------------------------
+
+\numberwithin { equation }{ section }
+
+\DeclareSIUnit \ft { ft }                % \inch and \ft for imperial units
+\DeclareSIUnit [ number-unit-product = \thinspace ] \inch { in }
+\DeclareSIUnit \aud { \textsc{Aud}\thinspace\$ }
+
+%% ============================================================================
+
+
+
+%% ============================= Figure packages ==============================
+
+\usepackage { graphicx   }
+\usepackage { tikz       }
+
+\usepackage { float      }
+\usepackage { adjustbox  }
+\usepackage[                           % Custom captions under/above floats
+    hang, small, up,                   % ~ in tables or figures.
+]           { caption    }
+\usepackage { subcaption }
+
+%% ----------------------------- Figure commands ------------------------------
+
+\graphicspath   { { images/ } }
+\usetikzlibrary { scopes }
+\captionsetup   {                   
+    figurewithin  = section,
+    tablewithin   = section,
+    justification = raggedright,
+    skip          = 5pt
+}
+
+\setlength \textfloatsep { 5pt }
+
+%% ============================================================================
+
+
+
+%% ============================== Table packages ==============================
+
+\usepackage { array    }               % For customisation of tables
+\usepackage { booktabs }               % Horizontal rules in tables
+\usepackage { multirow }
+\usepackage { makecell }               % Robust table cells -> e.g. \makecell
+                                       % ~ Allows for line-breaks within cells
+                                       % ~ Use \thead{...} for column names
+                                       
+\usepackage { rotating       }         % Rotate cells with \begin{sideways}...
+\usepackage { longtable      }         % Tables that go over multiple pages
+\usepackage { threeparttable }         % Tables that allow for notes below
+\usepackage { tablefootnote  }         % Allows for footnotes within tables
+
+%% ------------------------------ Table commands ------------------------------
+
+\renewcommand \theadfont \bfseries     % Format table headers to be bold
+\renewcommand \arraystretch { 1.2 }    % Spread rows out by 20%
+
+\let \oldthead \thead                  % Cache original `thead` command
+\RenewDocumentCommand \thead { sm }{   % Additional starred functionality
+    \IfBooleanTF { #1 }                % ~ allows for usage within `enum`
+    { \item[] } { }                    % ~ type columns
+    \oldthead { #2 }
+}
+
+\newcolumntype { C }[ 1 ]{ >{ \centering\arraybackslash   } p { #1 } }
+\newcolumntype { R }[ 1 ]{ >{ \raggedleft\arraybackslash  } p { #1 } }
+\newcolumntype { L }[ 1 ]{ >{ \raggedright\arraybackslash } p { #1 } }
+
+\newcolumntype { M }[ 1 ]{ >{ \raggedright\arraybackslash } m { #1 } }
+\newcolumntype { B }[ 1 ]{ >{ \raggedright\arraybackslash } b { #1 } }
+
+\newcolumntype { E }[ 1 ]{ >{ \begin{tableEnum} } L { #1 } <{ \end{tableEnum} } }
+\newcolumntype { I }[ 1 ]{ >{ \begin{tableItem} } L { #1 } <{ \end{tableItem} } }
+
+\newcommand \tabitem {                 % Last resort for manually formatting
+    \textbullet\quad                   % ~ dot points within tables 
+}
+
+%% ============================================================================
+
+
+
+%% ============================== List packages ===============================
+
+\usepackage { enumitem }               % For customisation of lists
+
+%% ------------------------------ List commands -------------------------------
+
+\makeatletter                          % For putting lists in tables properly
+\newcommand*{\compress}{\@minipagetrue}
+\makeatother
+
+% --- Remove line spacing between items
+\setlist { noitemsep }                    
+
+% --- Remove all vertical spacing in itemize, change default label
+\setitemize { nosep, label = $\triangleright$ }
+
+% --- Create enumerate for within tables
+\newlist { tableEnum }{ enumerate }{ 2 }      
+\setlist [ tableEnum ]{
+    nosep, 
+    leftmargin = 3.5ex, 
+    label      =\arabic*., 
+    labelwidth = 2.5ex, 
+    before     =\compress,
+    after      =\vspace{-3ex}
+}
+
+% --- Create itemize for within tables
+\newlist { tableItem }{ itemize }{ 2 }        
+\setlist [ tableItem ]{
+    nosep, 
+    leftmargin = 3.5ex, 
+    labelwidth = 2.5ex, 
+    label      = $\triangleright$,
+    before     =\compress,
+    after      =\vspace{-3ex}
+}
+
+% --- Create description for List of Acronyms
+\NewDocumentCommand \addcolon { m }{ #1: }
+\newlist { acronyms }{ description }{ 2 }
+\setlist [ acronyms ]{
+    noitemsep,
+    font       =\addcolon,
+    labelwidth = 5em,
+    leftmargin = 6.5em,
+    itemindent = 0pt,
+}
+
+\DeclareAcroListStyle { mystyle }{ list }{ list = acronyms }
+\acsetup { list-style = mystyle, list-name = Nomenclature }
+
+%% ============================================================================
+
+
+
+%% ============================== Code packages ===============================
+
+\usepackage { minted        }
+\usepackage { algpseudocode }
+
+%% ------------------------------ Code commands -------------------------------
+
+\renewcommand \listoflistingscaption { List of source codes }
+
+\usemintedstyle       { friendly }
+\setminted [ python ] {
+    tabsize  = 4,
+	fontsize =\footnotesize,
+	frame    = lines,
+	framesep = 0.5em,
+	obeytabs,
+	linenos
+}
+
+%% ============================================================================
+
+
+
+%% =========================== Referencing packages ===========================
+
+\usepackage [ hyphens              ] { url      }  % breaks urls at hyphens
+\usepackage [ hidelinks            ] { hyperref }
+\usepackage [ noabbrev, capitalise ] { cleveref }
+
+%% --------------------------- Referencing commands ---------------------------
+
+\providecommand \phantomsection \relax
+
+%% ============================================================================
