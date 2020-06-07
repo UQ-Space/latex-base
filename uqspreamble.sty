@@ -2,27 +2,27 @@
 \RequirePackage{expl3}                                     % - Load LaTeX3 packages
 
 
-%% ================================================================================
-%%                            ~~~ CLASS META-INFO ~~~                             
-%% ________________________________________________________________________________
+%% ============================================================================
+%%                           ~~~ CLASS META-INFO ~~~
+%% ____________________________________________________________________________
 
 \ProvidesExplPackage
-  {techreport}                                                      % - Name
-  {2020/03/27}                                                      % - Date
-  {1.0.2}                                                           % - Version
-  {Package list for technical reports in LaTeX}                     % - Description
-    
-%% ================================================================================
+  {uqspreamble}                                                 % - Name
+  {2020/06/07}                                                  % - Date
+  {1.0.3}                                                       % - Version
+  {Package list for technical reports in LaTeX}                 % - Description
 
-  
-  
+%% ============================================================================
+
+
+
 %% ============================= General packages =============================
 
 \usepackage [ utf8 ] { inputenc   }
 
 \usepackage          { parskip    }    % Improves paragraph spacing
-\usepackage          { geometry   } 
- 
+\usepackage          { geometry   }
+
 \usepackage          { microtype  }    % Tweak font spacing for aesthetics
 
 \usepackage          { multicol   }    % Multiple columns Environment
@@ -34,7 +34,7 @@
 
 %% ----------------------------- General commands -----------------------------
 
-% -- Create possessive endings for acronyms 
+% -- Create possessive endings for acronyms
 
 \ProvideAcroEnding { possessive } { 's } { 's }
 \ProvideAcroCommand \acg {
@@ -108,7 +108,7 @@
 
 \graphicspath   { { images/ } }
 \usetikzlibrary { scopes }
-\captionsetup   {                   
+\captionsetup   {
     figurewithin  = section,
     tablewithin   = section,
     justification = raggedright,
@@ -129,7 +129,7 @@
 \usepackage { makecell }               % Robust table cells -> e.g. \makecell
                                        % ~ Allows for line-breaks within cells
                                        % ~ Use \thead{...} for column names
-                                       
+
 \usepackage { rotating       }         % Rotate cells with \begin{sideways}...
 \usepackage { longtable      }         % Tables that go over multiple pages
 \usepackage { threeparttable }         % Tables that allow for notes below
@@ -158,7 +158,7 @@
 \newcolumntype { I }[ 1 ]{ >{ \begin{tableItem} } L { #1 } <{ \end{tableItem} } }
 
 \newcommand \tabitem {                 % Last resort for manually formatting
-    \textbullet\quad                   % ~ dot points within tables 
+    \textbullet\quad                   % ~ dot points within tables
 }
 
 %% ============================================================================
@@ -176,28 +176,28 @@
 \makeatother
 
 % --- Remove line spacing between items
-\setlist { noitemsep }                    
+\setlist { noitemsep }
 
 % --- Remove all vertical spacing in itemize, change default label
 \setitemize { nosep, label = $\triangleright$ }
 
 % --- Create enumerate for within tables
-\newlist { tableEnum }{ enumerate }{ 2 }      
+\newlist { tableEnum }{ enumerate }{ 2 }
 \setlist [ tableEnum ]{
-    nosep, 
-    leftmargin = 3.5ex, 
-    label      =\arabic*., 
-    labelwidth = 2.5ex, 
+    nosep,
+    leftmargin = 3.5ex,
+    label      =\arabic*.,
+    labelwidth = 2.5ex,
     before     =\compress,
     after      =\vspace{-3ex}
 }
 
 % --- Create itemize for within tables
-\newlist { tableItem }{ itemize }{ 2 }        
+\newlist { tableItem }{ itemize }{ 2 }
 \setlist [ tableItem ]{
-    nosep, 
-    leftmargin = 3.5ex, 
-    labelwidth = 2.5ex, 
+    nosep,
+    leftmargin = 3.5ex,
+    labelwidth = 2.5ex,
     label      = $\triangleright$,
     before     =\compress,
     after      =\vspace{-3ex}
