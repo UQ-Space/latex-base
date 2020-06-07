@@ -37,6 +37,10 @@ This is where we put the licensing...
 
 \documentclass{l3doc}
 \usepackage{framed,lipsum,xspace}
+\usepackage{parskip}
+
+\usepackage{xcolor}
+\providecolor{uqspacenavy}{HTML}{0e1f66}
 
 \NewDocumentCommand \UQ { }{
   U\kern-0.12emQ\xspace
@@ -66,7 +70,7 @@ This is where we put the licensing...
 % \author { \UQ Space \TeX{}nical Group\thanks {
 %   E-mail: \href{mailto:info@uqspace.com.au}{\texttt{info@uqspace.com.au}}
 % } }
-% \date   { Released \ExplFileDate }
+% \date   { Released 2020-03-27 }
 %
 % \maketitle
 % \tableofcontents
@@ -83,11 +87,42 @@ This is where we put the licensing...
 % \DescribeOption{comment}
 % User notes made using the \cs{comment} macro are show in the right margin of
 % the document. By default, when comments are enabled, the right margin is
-% extended by 2 inches and delimited with a red dashed line.
+% extended by 2 inches and delimited with a red dashed line. If this option is
+% not enabled, the \cs{comment} macro is undefined.
+%
+% \DescribeOption{internal}
+% The cover page is disabled, allowing for smaller internal documents to be
+% written, usually a single path in length. It also enables certain
+% documentation requirements, such as version numbering.
 %
 % \end{documentation}
 %
 % \begin{implementation}
+%
 % \section{Implementation}
+%
+% \subsection{Title Customisation}
+%
+% Several packages are used in the creation of custom titles within
+% \cls{uqsreport}. For ease of use, the |x11names| option is given to
+% \pkg{xcolor}. As the headers and footers will also be customised, the
+% |pagestyles| option is passed to the \pkg{titlesec} package.
+%    \begin{macrocode}
+\RequirePackage [ table, x11names ] { xcolor   }
+\RequirePackage [ pagestyles ]      { titlesec }
+\RequirePackage                     { titletoc }
+\RequirePackage                     { tikz     }
+%    \end{macrocode}
+% \UQ Space navy {\fboxsep 0pt {\colorbox[HTML]{0e1f66}{\phantom{XX}}}}
+% (|#0E1F66|) is defined, and assigned to various names. It is expected that
+% these colour definitions will vary as the class is developed.
+%    \begin{macrocode}
+\providecolor { uqspacenavy }{ HTML }{ 0E1F66 }
+
+\colorlet { section       }{ uqspacenavy }
+\colorlet { subsection    }{ uqspacenavy }
+\colorlet { subsubsection }{ uqspacenavy }
+\colorlet { paragraph     }{ uqspacenavy }
+%    \end{macrocode}
 % \end{implementation}
 % \Finale

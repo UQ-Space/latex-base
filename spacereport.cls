@@ -5,7 +5,7 @@
 
 
 %% ================================================================================
-%%                            ~~~ CLASS META-INFO ~~~                             
+%%                            ~~~ CLASS META-INFO ~~~
 %% ________________________________________________________________________________
 
 \ProvidesExplClass
@@ -13,7 +13,7 @@
     {2020/03/27}                                                    % - Date
     {1.0.2}                                                         % - Version
     {Technical Report template for use by UQ Space}                 % - Description
-    
+
 %% ================================================================================
 
 
@@ -22,11 +22,11 @@
 
 % Required package information:
 %
-%   xparse   -> Allows for custom macros with a range of inputs, including custom 
-%               defaults, stars, delimiters, etc. 
+%   xparse   -> Allows for custom macros with a range of inputs, including custom
+%               defaults, stars, delimiters, etc.
 %
-%   xspace   -> Detection of spaces and punctuation gobbled by a macro, and 
-%               replacement of said text naturally. 
+%   xspace   -> Detection of spaces and punctuation gobbled by a macro, and
+%               replacement of said text naturally.
 
 %% --------------------------------------------------------------------------------
 
@@ -55,22 +55,22 @@
 
 % Required package information:
 %
-%   xcolor   -> Creation of custom colours from a variety of input types (RGB, 
-%               HSV, etc.) Colours can be saved to given names. The [table] option 
-%               creates the `\rowcolor` macro, for colouring table rows. Caution 
-%               must be used when colouring rows with `booktabs`, as the colouring 
-%               will have gaps. The [x11names] option gives access to colours via 
-%               the common x11 naming scheme. 
+%   xcolor   -> Creation of custom colours from a variety of input types (RGB,
+%               HSV, etc.) Colours can be saved to given names. The [table] option
+%               creates the `\rowcolor` macro, for colouring table rows. Caution
+%               must be used when colouring rows with `booktabs`, as the colouring
+%               will have gaps. The [x11names] option gives access to colours via
+%               the common x11 naming scheme.
 %
-%   titlesec -> Customisation of title styles (section, subsection, etc.) Allows 
-%               for creation of new title levels between existing titles. The 
-%               [pagestyles] option provides a more simple and robust way to 
-%               customise the header and footer, with extra marks provided. 
-% 
+%   titlesec -> Customisation of title styles (section, subsection, etc.) Allows
+%               for creation of new title levels between existing titles. The
+%               [pagestyles] option provides a more simple and robust way to
+%               customise the header and footer, with extra marks provided.
+%
 %   titletoc -> Customisation of how different title styles appear in the TOC.
 
 %% --------------------------------------------------------------------------------
-    
+
 \RequirePackage [ table, x11names ] { xcolor   }
 \RequirePackage [ pagestyles ]      { titlesec }
 \RequirePackage                     { titletoc }
@@ -78,9 +78,9 @@
 
 %% --------------------------------------------------------------------------------
 
-% --- Define custom UQ Space colours for titles 
+% --- Define custom UQ Space colours for titles
 
-\definecolor { section       } { RGB } { 14, 31, 102 } 
+\definecolor { section       } { RGB } { 14, 31, 102 }
 \definecolor { subsection    } { RGB } { 14, 31, 102 }
 \definecolor { subsubsection } { RGB } { 14, 31, 102 }
 \definecolor { paragraph     } { RGB } { 14, 31, 102 }
@@ -89,14 +89,14 @@
 % --- Set text for section label, and reduce spacing of TOC appearance
 
 \NewDocumentCommand \sectionname {} { Section~ }
-\dottedcontents 
-    { section } 
+\dottedcontents
+    { section }
     [ 3.4ex ]
     { \vspace { 1ex } \bfseries }
     { 3ex }
     { 0pc }
-  
-  
+
+
 % --- Customise formatting for \section, \subsection & \subsubsection
 
 \titleformat \section                                   % Set format for \section
@@ -117,11 +117,11 @@
     { \thetitle \quad }
     { 0ex }
     { }
-  
-  
+
+
 % --- Customise spacing for \section, \subsection & \subsubsection
-  
-\titlespacing \section       { 0em }{ 2ex }{ 3ex }   
+
+\titlespacing \section       { 0em }{ 2ex }{ 3ex }
 \titlespacing \subsection    { 0em }{ 1ex }{ 1ex }
 \titlespacing \subsubsection { 1em }{ 1ex }{ 1ex }
 
@@ -163,17 +163,17 @@
 % Required package information
 %
 %   etoolbox -> Toolbox of commands for creating more complex macros, and hooking
-%               onto internal LaTeX and TeX macros. 
+%               onto internal LaTeX and TeX macros.
 
 %% -------------------------------------------------------------------------------
 
-\RequirePackage { etoolbox }    
+\RequirePackage { etoolbox }
 
 %% -------------------------------------------------------------------------------
 
 % --- Default footnotesize font within tables
 
-\AtBeginEnvironment  { tabular } \footnotesize               
+\AtBeginEnvironment  { tabular } \footnotesize
 
 
 % --- Reduction of spacing after tables and figures
@@ -188,43 +188,43 @@
 \appto \appendix {
     \RenewDocumentCommand \sectionname { } { Appendix~ }
     \renewcommand* \thesubsection {
-        % - Numbering: A.I   
-        \Alph   { section    } 
-        .\Roman { subsection } 
+        % - Numbering: A.I
+        \Alph   { section    }
+        .\Roman { subsection }
     }
     \renewcommand* \thesubsubsection {
-        % - Numbering: A.I.I   
-        \Alph   { section       } 
-        .\Roman { subsection    } 
-        .\Roman { subsubsection } 
+        % - Numbering: A.I.I
+        \Alph   { section       }
+        .\Roman { subsection    }
+        .\Roman { subsubsection }
     }
 }
 
 \RenewDocumentCommand \maketitle { } {
-  \begin{titlepage} 
-	\center 
-	
+  \begin{titlepage}
+	\center
+
     \includegraphics[width=0.95\linewidth]{images/UQSpace_Logo.png}\\
 
 	\vfill
-	
+
 	\fontfamily{qag}\selectfont
-	
+
 	\textbf{\Huge \The{project}} \\[3ex]
-	\rule[0.7ex]{0.25\textwidth}{.4pt} 
+	\rule[0.7ex]{0.25\textwidth}{.4pt}
 	\enspace {\large\The{duedate}} \enspace
-	\rule[0.7ex]{0.25\textwidth}{.4pt} \\[1.5ex]
+	\rule[0.7ex]{0.25\textwidth}{.4pt} \\
 	\textsc{\LARGE
 	    \The{competition} \\
-	    \The{team} 
-	    \enspace | \slshape \enspace 
+	    \The{team}
+	    \enspace | \enspace
 	    \The{document}
 	}
 
 	\vfill\vfill
 	\includegraphics[width=120mm]{images/UQ_Lockup_Landscape.png}
 	\vspace{1cm}
-	
+
   \end{titlepage}
 }
 
@@ -235,7 +235,7 @@
 
 
 %% ================================================================================
-%%                        NEW CUSTOM COMMANDS & ENVIRONMENTS                       
+%%                        NEW CUSTOM COMMANDS & ENVIRONMENTS
 %% ================================================================================
 
 \RequirePackage { marginnote }
@@ -276,7 +276,7 @@
 }
 
 
-% --- Formats the contributions list. Takes an optional number 
+% --- Formats the contributions list. Takes an optional number
 %     of columns to align to, with the default being 2.
 
 \NewDocumentEnvironment { contributions } { O{2} m } {
@@ -295,20 +295,20 @@
 
 \dim_const:Nn \totalMargin         { 0.85 in            }
 \dim_const:Nn \c_uqs_refHeight_dim { 29.7cm }  % -- 0.00009pt different to \the\pdfpageheight -_-
-\dim_const:Nn \c_uqs_refWidth_dim  { \the\pdfpagewidth + \g_uqs_comments_dim }
+\dim_const:Nn \c_uqs_refWidth_dim  { \the\pagewidth + \g_uqs_comments_dim }
 
 \prop_new:N \g_uqs_pages_prop
 
-\msg_new:nnn 
-    { Pages } 
-    { AlreadyDefined } 
+\msg_new:nnn
+    { Pages }
+    { AlreadyDefined }
     { The~page~size~#1~is~already~defined }
-\msg_new:nnn 
-    { Pages } 
-    { InvalidOrientation } 
+\msg_new:nnn
+    { Pages }
+    { InvalidOrientation }
     { Invalid~orientation~`#1`,~choose~`port`~or~`land` }
-  
-  
+
+
 % --- Define a new pagesize
 
 \NewDocumentCommand \newpagesize { mmm }{
@@ -320,7 +320,7 @@
     \exp_args:NNV \clist_put_right:Nn \l_tmpa_clist { \dim_use:N \l_tmpa_dim }
     \exp_args:NNV \clist_put_right:Nn \l_tmpa_clist { \dim_use:N \l_tmpb_dim }
     % Raise warning if page size already defined
-    \prop_if_in:NnT \g_uqs_pages_prop { #1 } { \msg_warning:nnn {Pages} {AlreadyDefined} {#1} } 
+    \prop_if_in:NnT \g_uqs_pages_prop { #1 } { \msg_warning:nnn {Pages} {AlreadyDefined} {#1} }
     % Put page size into global property list
     \exp_args:NNnV \prop_gput:Nnn \g_uqs_pages_prop { #1 } \l_tmpa_clist
 }
@@ -336,24 +336,24 @@
     \str_case:nnF { #2 } {
         { port } { }  % No need to change anything
         { land } { \clist_reverse:N \l_tmpa_clist }
-    } 
+    }
     { \msg_error:nnn {Pages} {InvalidOrientation} {#2} }
-    \dim_set:Nn \pdfpagewidth  { \clist_item:Nn \l_tmpa_clist 1 + \g_uqs_comments_dim }
-    \dim_set:Nn \pdfpageheight { \clist_item:Nn \l_tmpa_clist 2 }
+    \dim_set:Nn \pagewidth  { \clist_item:Nn \l_tmpa_clist 1 + \g_uqs_comments_dim }
+    \dim_set:Nn \pageheight { \clist_item:Nn \l_tmpa_clist 2 }
     \eject
     % Create new margins relative to original page size
     \newgeometry{
-		top    = \dim_eval:n { \totalMargin }, 
+		top    = \dim_eval:n { \totalMargin },
 		left   = \dim_eval:n { \totalMargin },
-		bottom = \dim_eval:n { \totalMargin + \c_uqs_refHeight_dim - \pdfpageheight },
-		right  = \dim_eval:n { \totalMargin + \c_uqs_refWidth_dim  - \pdfpagewidth  },
+		bottom = \dim_eval:n { \totalMargin + \c_uqs_refHeight_dim - \pageheight },
+		right  = \dim_eval:n { \totalMargin + \c_uqs_refWidth_dim  - \pagewidth  },
 		marginparsep = \totalMargin + 1em,
 		marginparwidth = \g_uqs_comments_dim - 1em
 	}
 }
 
 
-% --- Restores the page size and orientation to A4 portait. 
+% --- Restores the page size and orientation to A4 portait.
 %     Uses size comparison to reduce the number of calls required to `newgeometry`
 
 \NewDocumentCommand \restorepagesize { }{
@@ -368,7 +368,7 @@
 
 \RequirePackage{import}                                       % <--- Requires this!
 
-\let\oldimport\import 
+\let\oldimport\import
 \RenewDocumentCommand \import { mm }{
     % \newpage
     \oldimport { #1 }{ #2 }
@@ -382,13 +382,13 @@
 \prop_new:N \g_meta_dict_prop
 \seq_new:N  \g_meta_prefix_seq
 
-% --- Takes a list of key-value arguments, and assigns these within 
+% --- Takes a list of key-value arguments, and assigns these within
 %     the internal dictionary. Key-value arguments can be nested.
 
 \NewDocumentCommand \Setup { m }{
-    \keyval_parse:NNn 
-        \use_none:n 
-        \meta_subset:nn 
+    \keyval_parse:NNn
+        \use_none:n
+        \meta_subset:nn
         { #1 }
 }
 
@@ -400,12 +400,12 @@
     \exp_args:NNx   \str_set:Nn  \l_tmpa_str { \seq_use:Nn \g_meta_prefix_seq { . } }
     % If key already exists, then get token-list and append ', '
     % Otherwise, ensure temporary token-list is clear
-    \prop_get:NVNTF \g_meta_dict_prop \l_tmpa_str \l_tmpa_tl 
+    \prop_get:NVNTF \g_meta_dict_prop \l_tmpa_str \l_tmpa_tl
         { \tl_put_right:Nn \l_tmpa_tl {,~} }
         { \tl_gclear:N     \l_tmpa_tl }
     % Parse the values based on the last prefix
     \seq_get_right:NN \g_meta_prefix_seq \l_tmpb_tl
-    \exp_args:NNf \tl_put_right:Nn \l_tmpa_tl { 
+    \exp_args:NNf \tl_put_right:Nn \l_tmpa_tl {
         \str_case:VnF \l_tmpb_tl {
             { project  } { Project~#1 }
             { team     } { Team~#1 }
@@ -422,24 +422,24 @@
 }
 
 
-% --- Take a key-value 'meta' info pair, use the key as a prefix, 
+% --- Take a key-value 'meta' info pair, use the key as a prefix,
 %     and parse all the values individually.
 
 \cs_new:Nn \meta_subset:nn {
     \seq_put_right:Nn \g_meta_prefix_seq { #1 }
-    \keyval_parse:NNn 
-        \meta_set:n 
-        \meta_subset:nn 
+    \keyval_parse:NNn
+        \meta_set:n
+        \meta_subset:nn
         { #2 }
     \seq_pop_right:NN \g_meta_prefix_seq \l_tmpa_tl
 }
 
 
-% --- Access the meta info property list by the given key. 
-%     Raise an error if the key doesn't exist. 
+% --- Access the meta info property list by the given key.
+%     Raise an error if the key doesn't exist.
 
 \NewDocumentCommand \The { m }{
-    \prop_get:NnNTF \g_meta_dict_prop { #1 } \l_tmpa_tl 
+    \prop_get:NnNTF \g_meta_dict_prop { #1 } \l_tmpa_tl
         { \tl_use:N \l_tmpa_tl  }
         { ??? }
     \xspace
@@ -454,7 +454,7 @@
 \cs_new:Nn \acr_new_acro:nn { }
 \cs_new:Nn \acr_set_class:n {
   \cs_gset:Nn \acr_new_acro:nn {
-    \DeclareAcronym { ##1 } { 
+    \DeclareAcronym { ##1 } {
       short = { ##1 },
       long  = { ##2 },
       class = {  #1 }
@@ -463,8 +463,8 @@
 }
 
 
-% --- Takes a list of key-value arguments, with each key and values being the 
-%     short and long forms of the acronyms respectively. Has an optional 
+% --- Takes a list of key-value arguments, with each key and values being the
+%     short and long forms of the acronyms respectively. Has an optional
 %     argument representing the class the acronyms belong to.
 
 \NewDocumentCommand \AddAcronyms { om } {
