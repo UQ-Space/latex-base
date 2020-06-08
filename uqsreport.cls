@@ -228,38 +228,38 @@
 }
 
 \RenewDocumentCommand \maketitle { } {
-    \begin{titlepage}
-    \begin{tikzpicture}[remember~picture,overlay]
+  \begin{titlepage}
+  \begin{tikzpicture}[remember~picture,overlay]
 
-        \node( starmap ) at ([ yshift=40mm ] current~page . center ) {
-          \includegraphics[ width=\paperwidth ]{ images/starmap-2020-05-31.png }
-        };
+    \node( starmap ) at ([ yshift=40mm ] current~page . center ) {
+      \includegraphics[ width=\paperwidth ]{ images/starmap-2020-05-31.png }
+    };
 
-        \node[ anchor=north ] at ([ shift={(-3mm,-10mm)} ] current~page . north) {
-          \includegraphics[ width=\paperwidth ]{ images/UQ-Space-logo-1-BLUE.png }
-        };
+    \node[ anchor=north ] at ([ shift={(-3mm,-10mm)} ] current~page . north) {
+      \includegraphics[ width=\paperwidth ]{ packages/uqsLogo-blue.png }
+    };
 
-        \node( banner ) at ([ yshift=2mm ] current~page . south ) [
-          anchor=south, fill=UQS Blue,
-          minimum~width=(\paperwidth-4mm), minimum~height=40mm
-        ] {
-          \includegraphics[ width=0.9\paperwidth ]{ images/UQ~Lockup~White.png }
-        };
+    \node( banner ) at ([ yshift=2mm ] current~page . south ) [
+      anchor=south, fill=UQS Blue,
+      minimum~width=(\paperwidth-4mm), minimum~height=40mm
+    ] {
+      \includegraphics[ width=0.9\paperwidth ]{ packages/uqLockup-white.png }
+    };
 
-        \node[ anchor=south ] at ([ yshift=8mm ] banner . north ) {
-          \parbox { 0.8\paperwidth }{ \titleblock }
-        };
+    \node[ anchor=south ] at ([ yshift=8mm ] banner . north ) {
+      \parbox { 0.8\paperwidth }{ \titleblock }
+    };
 
-        % \node [ anchor=west ] at
-        %   ( [ xshift=+6mm ] current~page . west |- 0, 0 |- banner . center )
-        %   { \includegraphics [ height=20mm ]{ images/uqs-logo-w2.png } };
+    % \node [ anchor=west ] at
+    %   ( [ xshift=+6mm ] current~page . west |- 0, 0 |- banner . center )
+    %   { \includegraphics [ height=20mm ]{ images/uqs-logo-w2.png } };
 
-        % \node [ anchor=east ] at
-        %   ( [ xshift=-6mm ] current~page . east |- 0, 0 |- banner . center )
-        %   { \Large \color { white } \The{project} };
+    % \node [ anchor=east ] at
+    %   ( [ xshift=-6mm ] current~page . east |- 0, 0 |- banner . center )
+    %   { \Large \color { white } \The{project} };
 
-    \end{tikzpicture}
-    \end{titlepage}
+  \end{tikzpicture}
+  \end{titlepage}
 }
 
 %% ============================================================================
