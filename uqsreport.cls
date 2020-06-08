@@ -1,7 +1,5 @@
 \NeedsTeXFormat{LaTeX2e}
-
-\LoadClass[a4paper]{article}
-\RequirePackage{expl3}                                     % - Load LaTeX3 packages
+\RequirePackage{expl3}                                 % - Load LaTeX3 packages
 
 
 %% ============================================================================
@@ -9,10 +7,10 @@
 %% ____________________________________________________________________________
 
 \ProvidesExplClass
-    {uqsreport}                                                % - Name
-    {2020/06/07}                                               % - Date
-    {1.0.3}                                                    % - Version
-    {Technical Report template for use by UQ Space}            % - Description
+  {uqsreport}                                                   % - Name
+  {2020/06/07}                                                  % - Date
+  {1.0.3}                                                       % - Version
+  {Report class for use by UQ Space}                            % - Description
 
 
 %% ============================================================================
@@ -40,13 +38,13 @@
 \bool_new:N \g_uqs_comments_bool
 \dim_new:N  \commentmargin
 \keys_define:nn { docOptions }{
-    comments .code:n = {
-        \bool_set_true:N \g_uqs_comments_bool
-        \dim_set:Nn \commentmargin { 2in }
-    },
-    unknown .code:n = {
-        \PassOptionsToClass{\CurrentOption}{article}
-    }
+  comments .code:n = {
+    \bool_set_true:N \g_uqs_comments_bool
+    \dim_set:Nn \commentmargin { 2in }
+  },
+  unknown .code:n = {
+    \PassOptionsToClass{\CurrentOption}{article}
+  }
 }
 
 \ProcessKeysOptions { docOptions }
@@ -106,38 +104,38 @@
 
 \NewDocumentCommand \titleprefix { }{ }
 \dottedcontents
-    { section }
-    [ 3.4ex ]
-    { \vspace { 1ex } \color { section } \firamedium }
-    { 3ex }
-    { 0pc }
+  { section }
+  [ 3.4ex ]
+  { \vspace { 1ex } \color { section } \firamedium }
+  { 3ex }
+  { 0pc }
 
 
 % --- Customise formatting for \section, \subsection & \subsubsection
 \titleformat \section
-    { \color { section } \Large \firamedium }
-    { \makebox[ 0ex ][ r ]{ \thetitle\enspace } }
-    { 0ex }
-    { }
+  { \color { section } \Large \firamedium }
+  { \makebox[ 0ex ][ r ]{ \thetitle\enspace } }
+  { 0ex }
+  { }
 
 \titleformat \subsection
-    { \color { sub section } \large \firamedium }
-    { \makebox[ 0ex ][ r ]{ \thetitle\enspace } }
-    { 0ex }
-    { }
+  { \color { sub section } \large \firamedium }
+  { \makebox[ 0ex ][ r ]{ \thetitle\enspace } }
+  { 0ex }
+  { }
 
 \titleformat \subsubsection
-    { \color { sub sub section } \firamedium }
-    { \makebox[ 0ex ][ r ]{ \thetitle\enspace } }
-    { 0ex }
-    { }
+  { \color { sub sub section } \firamedium }
+  { \makebox[ 0ex ][ r ]{ \thetitle\enspace } }
+  { 0ex }
+  { }
 
 \titleformat \paragraph
-    [ runin ]
-    { \color { paragraph } \firamedium }
-    { }
-    { 0ex }
-    { }
+  [ runin ]
+  { \color { paragraph } \firamedium }
+  { }
+  { 0ex }
+  { }
 
 
 % --- Customise spacing for \section, \subsection & \subsubsection
@@ -151,14 +149,13 @@
 % --- Customise the header and footer respectively
 
 \NewDocumentCommand \marginRule {  }{
-    \bool_if:nT \g_uqs_comments_bool {
-        \begin{tikzpicture}[overlay,remember~picture]
-            \draw[UQS Blue,thin]
-                ([xshift=\pdfpagewidth-\commentmargin]current~page.north~west)
-                --
-                ([xshift=\pdfpagewidth-\commentmargin]current~page.south~west);
-        \end{tikzpicture}
-    }
+  \bool_if:nT \g_uqs_comments_bool {
+    \begin{tikzpicture}[ overlay, remember~picture ]
+      \draw[UQS Blue,thin]
+        ( [xshift=\pdfpagewidth-\commentmargin] current~page.north~west ) --
+        ( [xshift=\pdfpagewidth-\commentmargin] current~page.south~west ) ;
+    \end{tikzpicture}
+  }
 }
 
 \widenhead { 10mm }{ 10mm }
@@ -384,24 +381,24 @@
 %     'port'.
 
 \NewDocumentCommand \setpagesize { O{} m !O{port} }{
-    \prop_get:NnN \g_uqs_pages_prop { #2 } \l_tmpa_tl
-    \exp_args:NNV \clist_set:Nn \l_tmpa_clist \l_tmpa_tl
-    \str_case:nnF { #3 } {
-        { port } { }  % No need to change anything
-        { land } { \clist_reverse:N \l_tmpa_clist }
-    }
-    { \msg_error:nnn {Pages} {InvalidOrientation} {#3} }
-    \dim_set:Nn \pdfpagewidth  { \clist_item:Nn \l_tmpa_clist 1 + \commentmargin }
-    \dim_set:Nn \pdfpageheight { \clist_item:Nn \l_tmpa_clist 2 }
-    \eject
-    % Create new margins relative to original page size
-    \newgeometry{
-		layoutsize = { \pdfpagewidth, \pdfpageheight },
-		marginparsep = \defaultmargin + 1em,  % |- 1em for padding
-		marginpar    = \commentmargin - 2em,  % |
-        margin       = \defaultmargin,
-        right        = \defaultmargin + \commentmargin,
-        #1
+  \prop_get:NnN \g_uqs_pages_prop { #2 } \l_tmpa_tl
+  \exp_args:NNV \clist_set:Nn \l_tmpa_clist \l_tmpa_tl
+  \str_case:nnF { #3 } {
+    { port } { }  % No need to change anything
+    { land } { \clist_reverse:N \l_tmpa_clist }
+  }
+  { \msg_error:nnn {Pages} {InvalidOrientation} {#3} }
+  \dim_set:Nn \pdfpagewidth  { \clist_item:Nn \l_tmpa_clist 1 + \commentmargin }
+  \dim_set:Nn \pdfpageheight { \clist_item:Nn \l_tmpa_clist 2 }
+  \eject
+  % Create new margins relative to original page size
+  \newgeometry{
+    layoutsize = { \pdfpagewidth, \pdfpageheight },
+    marginparsep = \defaultmargin + 1em,  % |- 1em for padding
+    marginpar    = \commentmargin - 2em,  % |
+    margin       = \defaultmargin,
+    right        = \defaultmargin + \commentmargin,
+    #1
 	}
 }
 
@@ -461,7 +458,6 @@
     \exp_args:NNf \tl_put_right:Nn \l_tmpa_tl {
         \str_case:VnF \l_tmpb_tl {
             { project  } { #1 }
-            % { team     } { Team~#1 }
             { altitude } { \SI{#1}{\ft} }
             { size     } { \SI{#1}{\inch} }
             { length   } { \SI{#1}{\mm} }
