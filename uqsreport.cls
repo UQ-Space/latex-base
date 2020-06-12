@@ -232,7 +232,7 @@
   \begin{tikzpicture}[remember~picture,overlay]
 
     \node( starmap ) at ([ yshift=40mm ] current~page . center ) {
-      \includegraphics[ width=\paperwidth ]{ images/starmap-2020-05-31.png }
+      \includegraphics[ width=\paperwidth ]{ images/starmap.png }
     };
 
     \node[ anchor=north ] at ([ shift={(-3mm,-10mm)} ] current~page . north) {
