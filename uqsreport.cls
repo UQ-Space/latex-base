@@ -80,6 +80,7 @@
 \RequirePackage [ pagestyles ]      { titlesec }
 \RequirePackage                     { titletoc }
 \RequirePackage                     { tikz     }
+\RequirePackage                     { themeta  }
 
 %% ----------------------------------------------------------------------------
 
@@ -216,15 +217,19 @@
 }
 
 \NewDocumentCommand \titleblock { }{
-    \centering \color { UQS Blue } \firalight
-    { \large \firamedium \scshape Australian~Universities~Rocket~Competition } \\[1.8ex]
-    { \Huge \The{document} } \\[1.5ex]
-    { \large
-        \rule[0.6ex]{0.32\textwidth}{.4pt}
-        \enspace { Teams~1~\&~2 } \enspace
-        \rule[0.6ex]{0.32\textwidth}{.4pt}
-    } \\[1.6ex]
-    { \huge Projects~Hephaestus~\&~Vulcan }
+  \centering \color { UQS Blue } \firalight
+  \ifThe{competition}
+    { \large \firamedium \scshape \The{competition} }
+  \fi \\[1.8ex]
+  { \Huge \The{document} } \\[1.5ex]
+  \ifThe{team} { \large
+    \rule[0.6ex]{0.32\textwidth}{.4pt}
+    \enspace { \The{team} } \enspace
+    \rule[0.6ex]{0.32\textwidth}{.4pt}
+  } \else { \large
+    \rule[0.6ex]{0.80\textwidth}{.4pt}
+  } \fi \\[1.6ex]
+  { \huge \The{project} }
 }
 
 \RenewDocumentCommand \maketitle { } {
