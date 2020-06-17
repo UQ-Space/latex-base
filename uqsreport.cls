@@ -219,8 +219,8 @@
 \NewDocumentCommand \titleblock { }{
   \centering \color { UQS Blue } \firalight
   \ifThe{competition}
-    { \large \firamedium \scshape \The{competition} }
-  \fi \\[1.8ex]
+    { \large \firamedium \scshape \The{competition} } \\[1.8ex]
+  \fi
   { \Huge \The{document} } \\[1.5ex]
   \ifThe{team} { \large
     \rule[0.6ex]{0.32\textwidth}{.4pt}
