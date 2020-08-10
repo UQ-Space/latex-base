@@ -1,3 +1,10 @@
 # Ignore output files
 *.pdf
 test.*
+
+# Extra packages
+comments.sty
+secnum.sty
+siunitx-extra.sty
+themeta.sty
+versioning.sty
