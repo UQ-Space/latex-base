@@ -2,9 +2,10 @@
 *.pdf
 test.*
 
-# Extra packages
-comments.sty
-secnum.sty
-siunitx-extra.sty
-themeta.sty
-versioning.sty
+# Ignore Extra packages
+**.sty
+**.cls
+
+# Focus on developed packages
+!uqspreamble.sty
+!uqsreport.cls
