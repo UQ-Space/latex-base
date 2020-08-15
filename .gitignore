@@ -1,3 +1,11 @@
 # Ignore output files
 *.pdf
 test.*
+
+# Ignore Extra packages
+**.sty
+**.cls
+
+# Focus on developed packages
+!uqspreamble.sty
+!uqsreport.cls
