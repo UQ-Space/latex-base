@@ -42,8 +42,8 @@
 
 % -- Create possessive endings for acronyms
 
-\ProvideAcroEnding { possessive } { 's } { 's }
-\ProvideAcroCommand \acg {
+\DeclareAcroEnding { possessive } { 's } { 's }
+\NewAcroCommand \acg {
   \acro_possessive:
   \acro_use:n { #1 }
 }
