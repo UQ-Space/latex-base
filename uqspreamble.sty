@@ -8,8 +8,8 @@
 
 \ProvidesExplPackage
   {uqspreamble}                                                 % - Name
-  {2020/06/07}                                                  % - Date
-  {1.0.3}                                                       % - Version
+  {2020/10/17}                                                  % - Date
+  {1.0.4}                                                       % - Version
   {Report preamble list for use by UQ Space}                    % - Description
 
 %% ============================================================================
@@ -43,9 +43,8 @@
 % -- Create possessive endings for acronyms
 
 \DeclareAcroEnding { possessive } { 's } { 's }
-\NewAcroCommand \acg {
-  \acro_possessive:
-  \acro_use:n { #1 }
+\NewAcroCommand \acg { m }{
+  \acropossessive \UseAcroTemplate { first }{ #1 }
 }
 
 \linespread{1.15}                      % Nicer linespreading
@@ -246,8 +245,8 @@
   itemindent = 0pt,
 }
 
-\DeclareAcroListStyle { mystyle }{ list }{ list = acronyms }
-\acsetup { list-style = mystyle, list-name = Nomenclature }
+% TODO: Recreate / modify the description list style
+\acsetup { list/template = description, list/name = Nomenclature }
 
 %% ============================================================================
 

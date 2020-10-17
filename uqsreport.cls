@@ -8,8 +8,8 @@
 
 \ProvidesExplClass
   {uqsreport}                                                   % - Name
-  {2020/06/07}                                                  % - Date
-  {1.0.3}                                                       % - Version
+  {2020/10/17}                                                  % - Date
+  {1.0.4}                                                       % - Version
   {Report class for use by UQ Space}                            % - Description
 
 
@@ -443,7 +443,7 @@
     \DeclareAcronym { ##1 } {
       short = { ##1 },
       long  = { ##2 },
-      class = {  #1 }
+      tag   = {  #1 }
     }
   }
 }
