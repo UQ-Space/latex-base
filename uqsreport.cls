@@ -123,20 +123,20 @@
 \titlecontents
   { section }
   [ 4ex ]
-  { \vspace { 1ex } \color { section } \sffamily }
+  { \vspace { 1ex } }
   { \contentslabel{3ex} }{ }{ \titlerule*[1em]{.}\contentspage }{ \vspace { 1ex } }
 
 \dottedcontents
   { sub section }
   [ 10ex ]
-  { \color { sub section } \sffamily }
+  { }
   { 5ex }
   { 0pc }
 
 \dottedcontents
   { sub sub section }
   [ 19ex ]
-  { \color { sub sub section } \sffamily }
+  { }
   { 7ex }
   { 0pc }
 
