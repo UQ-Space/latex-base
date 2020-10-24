@@ -111,10 +111,6 @@
 \definecolor { dark green }{ HTML }{ 31ac34 }
 \definecolor { dark blue  }{ HTML }{ 2f5ec9 }
 
-\colorlet {         section } { UQS Blue }
-\colorlet {     sub section } { UQS Blue }
-\colorlet { sub sub section } { UQS Blue }
-\colorlet {       paragraph } { UQS Blue }
 
 \colorlet {         section } { UQ Purple }
 \colorlet {     sub section } { UQ Purple }
