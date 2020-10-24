@@ -40,7 +40,7 @@
 \keys_define:nn { docOptions }{
   comments .code:n = {
     \bool_set_true:N \g_uqs_comments_bool
-    \dim_set:Nn \commentmargin { 2in }
+    \dim_set:Nn \commentmargin { 50mm }
   },
   unknown .code:n = {
     \PassOptionsToClass{\CurrentOption}{article}
@@ -249,15 +249,15 @@
   \ifThe{competition}
     { \large \sffamily \bfseries \scshape \The{competition} } \\[1.8ex]
   \fi
-  { \Huge \scshape \The{document} } \\[1.5ex]
+  { \Huge \scshape \robotoThin{\The{document}} } \\[1.5ex]
   \ifThe{team} { \large
     \rule[0.6ex]{0.32\textwidth}{.4pt}
-    \enspace { \The{team} } \enspace
+    \enspace { \robotoThin{\The{team}} } \enspace
     \rule[0.6ex]{0.32\textwidth}{.4pt}
   } \else { \large
     \rule[0.6ex]{0.80\textwidth}{.4pt}
   } \fi \\[1.6ex]
-  { \huge \The{project} }
+  { \huge \robotoThin{\The{project}} }
 }
 
 \RenewDocumentCommand \maketitle { } {
@@ -291,14 +291,6 @@
 
     \node[ anchor=south, white ] at ( banner . north ) {
       \parbox { 0.8\paperwidth }{ \titleblock } };
-
-    % \node [ anchor=west ] at
-    %   ( [ xshift=+6mm ] current~page . west |- 0, 0 |- banner . center )
-    %   { \includegraphics [ height=20mm ]{ images/uqs-logo-w2.png } };
-
-    % \node [ anchor=east ] at
-    %   ( [ xshift=-6mm ] current~page . east |- 0, 0 |- banner . center )
-    %   { \Large \color { white } \The{project} };
 
   \end{tikzpicture}
   \end{titlepage}
