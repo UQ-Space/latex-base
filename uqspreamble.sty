@@ -277,9 +277,20 @@
 
 %% =========================== Referencing packages ===========================
 
-\usepackage [ hyphens              ] { url      }  % breaks urls at hyphens
-\usepackage [ hidelinks, luatex    ] { hyperref }
-\usepackage [ noabbrev, capitalise ] { cleveref }
+\RequirePackage [ hyphens              ] { url      }  % breaks urls at hyphens
+\RequirePackage [ hidelinks            ] { hyperref }
+\RequirePackage [ noabbrev, capitalise ] { cleveref }
+
+\usepackage{csquotes}
+\usepackage[english]{babel}
+\usepackage[
+    backend=biber,
+    natbib,
+    style=apa,
+    citestyle=apa
+]{biblatex}
+\DeclareLanguageMapping{english}{english-apa}
+\setcounter{biburlucpenalty}{10000}
 
 %% --------------------------- Referencing commands ---------------------------
 
