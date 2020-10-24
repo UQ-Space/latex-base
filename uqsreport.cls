@@ -8,8 +8,8 @@
 
 \ProvidesExplClass
   {uqsreport}                                                   % - Name
-  {2020/10/17}                                                  % - Date
-  {1.0.4}                                                       % - Version
+  {2020/10/24}                                                  % - Date
+  {1.1.0}                                                       % - Version
   {Report class for use by UQ Space}                            % - Description
 
 
@@ -84,14 +84,29 @@
 
 %% ----------------------------------------------------------------------------
 
-% --- Define custom UQ Space colours for titles
+\RequirePackage   [ T1 ]{ fontenc }
+\DeclareFontShape { T1 }{ cmr }{ c }{ n }{ <->ssub*cmr/m/n }{ }
 
-\providecolor { UQS Blue }{ HTML }{ 091544 }
-\providecolor { UQS Grey }{ HTML }{ 868eb2 }
+% -- Current Roboto font set
 
-\definecolor { red    }{ HTML }{ e04d4a }
-\definecolor { green  }{ HTML }{ 5ad05d }
-\definecolor { orange }{ HTML }{ f49936 }
+\RequirePackage [ light ]{ roboto }
+\renewcommand \seriesdefault { m }
+
+% ----------------------------------------
+%            Colour Definitions
+% ----------------------------------------
+
+% -- UQ Space Colours
+
+\providecolor { UQ Purple }{ HTML }{ 51247A }
+\providecolor { UQ Grey   }{ HTML }{ 999490 }
+
+% -- Standard Palette
+
+\definecolor { red        }{ HTML }{ E62645 }
+\definecolor { green      }{ HTML }{ 2EA836 }
+\definecolor { orange     }{ HTML }{ EB602B }
+\definecolor { magenta    }{ HTML }{ 962A8B }
 
 \definecolor { dark green }{ HTML }{ 31ac34 }
 \definecolor { dark blue  }{ HTML }{ 2f5ec9 }
@@ -101,39 +116,56 @@
 \colorlet { sub sub section } { UQS Blue }
 \colorlet {       paragraph } { UQS Blue }
 
+\colorlet {         section } { UQ Purple }
+\colorlet {     sub section } { UQ Purple }
+\colorlet { sub sub section } { UQ Purple }
+\colorlet {       paragraph } { UQ Purple }
+
 % --- Set text for section label, and reduce spacing of TOC appearance
 
 \NewDocumentCommand \titleprefix { }{ }
-\dottedcontents
+\titlecontents
   { section }
-  [ 3.4ex ]
-  { \vspace { 1ex } \color { section } \firamedium }
-  { 3ex }
+  [ 4ex ]
+  { \vspace { 1ex } \color { section } \sffamily }
+  { \contentslabel{3ex} }{ }{ \titlerule*[1em]{.}\contentspage }{ \vspace { 1ex } }
+
+\dottedcontents
+  { sub section }
+  [ 10ex ]
+  { \color { sub section } \sffamily }
+  { 5ex }
   { 0pc }
 
+\dottedcontents
+  { sub sub section }
+  [ 19ex ]
+  { \color { sub sub section } \sffamily }
+  { 7ex }
+  { 0pc }
 
 % --- Customise formatting for \section, \subsection & \subsubsection
 \titleformat \section
-  { \color { section } \Large \firamedium }
-  { \makebox[ 0ex ][ r ]{ \thetitle\enspace } }
+  { \setlength\fboxsep{2mm} \color { section } \Large \sffamily \bfseries }
+  { \llap { \fcolorbox{UQPurple}{UQPurple}{ \hspace\marginparsep \color{white} \thetitle } \enspace }}
   { 0ex }
   { }
 
 \titleformat \subsection
-  { \color { sub section } \large \firamedium }
-  { \makebox[ 0ex ][ r ]{ \thetitle\enspace } }
+  { \color { sub section } \large \sffamily }
+  { \llap { \thetitle\enspace } }
   { 0ex }
   { }
 
 \titleformat \subsubsection
-  { \color { sub sub section } \firamedium }
-  { \makebox[ 0ex ][ r ]{ \thetitle\enspace } }
+  { \color { sub sub section } \sffamily }
+  { \llap { \thetitle\enspace } }
   { 0ex }
   { }
 
 \titleformat \paragraph
   [ runin ]
-  { \color { paragraph } \firamedium }
+  { \color { paragraph } \sffamily }
   { }
   { 0ex }
   { }
@@ -152,7 +184,7 @@
 \NewDocumentCommand \marginRule {  }{
   \bool_if:nT \g_uqs_comments_bool {
     \begin{tikzpicture}[ overlay, remember~picture ]
-      \draw[UQS Blue,thin]
+      \draw[UQ Purple,thin]
         ( [xshift=\pdfpagewidth-\commentmargin] current~page.north~west ) --
         ( [xshift=\pdfpagewidth-\commentmargin] current~page.south~west ) ;
     \end{tikzpicture}
@@ -168,12 +200,12 @@
     \setfoot { }{ }{ }
 }
 
-\newpagestyle { simple }[ \color{UQS Blue}\firalight ]{
+\newpagestyle { simple }[ \color{UQ Purple}\sffamily ]{
     \sethead { \projectTag }{ }{ \marginRule }
     \setfoot { }{ \thepage }{ }
 }
 
-\newpagestyle { fancy }[ \color{UQS Blue}\firalight ]{
+\newpagestyle { fancy }[ \color{UQ Purple}\sffamily ]{
     \sethead { \projectTag    }{ }{ \sectiontitle\marginRule }
     \setfoot { \The{document} }{ }{ \thepage }
 }
@@ -217,11 +249,11 @@
 }
 
 \NewDocumentCommand \titleblock { }{
-  \centering \color { UQS Blue } \firalight
+  \centering \sffamily
   \ifThe{competition}
-    { \large \firamedium \scshape \The{competition} } \\[1.8ex]
+    { \large \sffamily \bfseries \scshape \The{competition} } \\[1.8ex]
   \fi
-  { \Huge \The{document} } \\[1.5ex]
+  { \Huge \scshape \The{document} } \\[1.5ex]
   \ifThe{team} { \large
     \rule[0.6ex]{0.32\textwidth}{.4pt}
     \enspace { \The{team} } \enspace
@@ -234,26 +266,35 @@
 
 \RenewDocumentCommand \maketitle { } {
   \begin{titlepage}
+
+  \pgfdeclareverticalshading { sunset }{ 100 bp }
+    { color(0bp)=(magenta); color(60bp)=(UQ Purple); color(100bp)=(UQ Purple) }
+
+  \tikzfading[
+    name = fade~sunset,
+    top~color=transparent!100,
+    bottom~color=transparent!0
+  ]
+
   \begin{tikzpicture}[remember~picture,overlay]
 
+    \fill [ black ] ( current~page . north~west ) rectangle ( current~page . south~east );
+
+    \shade [
+      shading=sunset, path~fading=fade~sunset
+    ] ( current~page . south~west ) rectangle +(\paperwidth, .5\paperheight);
+
     \node( starmap ) at ([ yshift=40mm ] current~page . center ) {
-      \includesvg[ width=\paperwidth, inkscapearea=page ]{ images/starmap.svg }
-    };
+      \includesvg[ width=\paperwidth, inkscapearea=page ]{ images/starcover.svg } };
 
     \node[ anchor=north ] at ([ shift={(-3mm,-10mm)} ] current~page . north) {
-      \includegraphics[ width=\paperwidth ]{ packages/uqsLogo-blue.png }
-    };
+      \includegraphics[ width=\paperwidth ]{ packages/uqsLogo-light.png } };
 
-    \node( banner ) at ([ yshift=2mm ] current~page . south ) [
-      anchor=south, fill=UQS Blue,
-      minimum~width=(\paperwidth-4mm), minimum~height=40mm
-    ] {
-      \includegraphics[ width=0.9\paperwidth ]{ packages/uqLockup-white.png }
-    };
+    \node[ anchor=south, outer~sep=5mm ] ( banner ) at ( current~page . south ) {
+      \includegraphics[ width=0.9\paperwidth ]{ packages/uqLockup-white.png } };
 
-    \node[ anchor=south ] at ([ yshift=8mm ] banner . north ) {
-      \parbox { 0.8\paperwidth }{ \titleblock }
-    };
+    \node[ anchor=south, white ] at ( banner . north ) {
+      \parbox { 0.8\paperwidth }{ \titleblock } };
 
     % \node [ anchor=west ] at
     %   ( [ xshift=+6mm ] current~page . west |- 0, 0 |- banner . center )
@@ -291,7 +332,7 @@
 \RenewDocumentEnvironment { abstract }{ }{
     \hfill
     \begin{minipage}{0.8\linewidth}
-    \textcolor{UQS Blue}{\firamedium{Abstract: }}
+    \textcolor{UQ Purple}{\firamedium{Abstract: }}
 }{
     \end{minipage}
     \hfill
