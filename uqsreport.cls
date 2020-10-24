@@ -388,77 +388,7 @@
 
 %% ------------------ Resize and reorient pages mid-document ------------------
 
-\dim_const:Nn \defaultmargin       { 0.85 in }
-\dim_const:Nn \c_uqs_refHeight_dim { 29.7 cm }  % -- 0.00009pt different to \the\pdfpageheight -_-
-\dim_const:Nn \c_uqs_refWidth_dim  { \the\pdfpagewidth + \commentmargin }
-
-\prop_new:N \g_uqs_pages_prop
-
-\msg_new:nnn
-    { Pages }
-    { AlreadyDefined }
-    { The~page~size~#1~is~already~defined }
-\msg_new:nnn
-    { Pages }
-    { InvalidOrientation }
-    { Invalid~orientation~`#1`,~choose~`port`~or~`land` }
-
-
-% --- Define a new pagesize
-
-\NewDocumentCommand \newpagesize { mmm }{
-    % Sort the dimensions; a <- short, b <- long
-    \dim_set:Nn \l_tmpa_dim { \dim_min:nn { #2 } { #3 } }
-    \dim_set:Nn \l_tmpb_dim { \dim_max:nn { #2 } { #3 } }
-    % Add dimensions to comma list
-    \clist_clear:N \l_tmpa_clist
-    \exp_args:NNV \clist_put_right:Nn \l_tmpa_clist { \dim_use:N \l_tmpa_dim }
-    \exp_args:NNV \clist_put_right:Nn \l_tmpa_clist { \dim_use:N \l_tmpb_dim }
-    % Raise warning if page size already defined
-    \prop_if_in:NnT \g_uqs_pages_prop { #1 } { \msg_warning:nnn {Pages} {AlreadyDefined} {#1} }
-    % Put page size into global property list
-    \exp_args:NNnV \prop_gput:Nnn \g_uqs_pages_prop { #1 } \l_tmpa_clist
-}
-
-
-% --- Sets the current page size and orientation. Mandatory argument is the
-%     page size, as is set by `newpagesize`, while the optional argument is
-%     'port' or 'land' for portrait and landscape respectively. Default is
-%     'port'.
-
-\NewDocumentCommand \setpagesize { O{} m !O{port} }{
-  \prop_get:NnN \g_uqs_pages_prop { #2 } \l_tmpa_tl
-  \exp_args:NNV \clist_set:Nn \l_tmpa_clist \l_tmpa_tl
-  \str_case:nnF { #3 } {
-    { port } { }  % No need to change anything
-    { land } { \clist_reverse:N \l_tmpa_clist }
-  }
-  { \msg_error:nnn {Pages} {InvalidOrientation} {#3} }
-  \dim_set:Nn \pdfpagewidth  { \clist_item:Nn \l_tmpa_clist 1 + \commentmargin }
-  \dim_set:Nn \pdfpageheight { \clist_item:Nn \l_tmpa_clist 2 }
-  \eject
-  % Create new margins relative to original page size
-  \newgeometry{
-    layoutsize = { \pdfpagewidth, \pdfpageheight },
-    marginparsep = \defaultmargin + 1em,  % |- 1em for padding
-    marginpar    = \commentmargin - 2em,  % |
-    margin       = \defaultmargin,
-    right        = \defaultmargin + \commentmargin,
-    #1
-	}
-}
-
-
-% --- Restores the page size and orientation to A4 portait. Uses size
-%     comparison to reduce the number of calls required to `newgeometry`
-
-\NewDocumentCommand \restorepagesize { }{
-    \bool_lazy_and:nnF
-        { \dim_compare_p:nNn { \pdfpagewidth  }{ = }{ \c_uqs_refWidth_dim  } }
-        { \dim_compare_p:nNn { \pdfpageheight }{ = }{ \c_uqs_refHeight_dim } }
-        { \newpage\setpagesize{ A4 } }
-}
-
+\usepackage{paperchange}
 
 % --- Reset page sizing after importing each section, for consistency
 
