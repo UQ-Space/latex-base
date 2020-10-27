@@ -124,21 +124,21 @@
   { section }
   [ 4ex ]
   { \vspace { 1ex } }
-  { \contentslabel{3ex} }{ }{ \titlerule*[1em]{.}\contentspage }{ \vspace { 1ex } }
+  { \contentslabel{3ex} }{ }{ \hfill\contentspage }{ \vspace { 1ex } }
 
 \dottedcontents
   { sub section }
   [ 10ex ]
   { }
   { 5ex }
-  { 0pc }
+  { 1em }
 
 \dottedcontents
   { sub sub section }
   [ 19ex ]
   { }
   { 7ex }
-  { 0pc }
+  { 1em }
 
 % --- Customise formatting for \section, \subsection & \subsubsection
 \titleformat \section
