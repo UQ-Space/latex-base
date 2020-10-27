@@ -119,7 +119,6 @@
 
 % --- Set text for section label, and reduce spacing of TOC appearance
 
-\NewDocumentCommand \titleprefix { }{ }
 \titlecontents
   { section }
   [ 4ex ]
@@ -141,9 +140,18 @@
   { 1em }
 
 % --- Customise formatting for \section, \subsection & \subsubsection
+\NewDocumentCommand \titleprefix { }{ }
+\NewDocumentCommand \colorpadbox { O{2mm} m m }{
+  \setlength \fboxsep { #1 }
+  \fcolorbox { #2 }{ #2 }{ #3 }
+}
+
 \titleformat \section
-  { \setlength\fboxsep{2mm} \color { section } \Large \sffamily \bfseries }
-  { \llap { \fcolorbox{UQPurple}{UQPurple}{ \hspace\marginparsep \color{white} \thetitle } \enspace }}
+  { \color { section } \Large \sffamily \bfseries }
+  {
+    \llap { \raisebox{\height+2mm}{\phantom{X}{\scshape \normalsize \titleprefix}}  \enspace }
+    \llap { \colorpadbox{ section }{ \hspace\marginparsep \color{white} \thetitle } \enspace }
+  }
   { 0ex }
   { }
 
