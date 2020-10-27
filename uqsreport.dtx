@@ -1,0 +1,128 @@
+% \iffalse meta-comment
+%
+%% File: uqsreport.dtx
+%
+% This is where we put the licensing...
+%
+%<*driver>
+\def\nameofplainTeX{plain}
+\ifx\fmtname\nameofplainTeX\else
+  \expandafter\begingroup
+\fi
+\input l3docstrip.tex
+\askforoverwritefalse
+\preamble
+
+This is where we put the licensing...
+
+\endpreamble
+% stop docstrip adding \endinput
+\postamble
+\endpostamble
+\generate{\file{uqsreport.cls}{\from{uqsreport.dtx}{class}}}
+\ifx\fmtname\nameofplainTeX
+  \expandafter\endbatchfile
+\else
+  \expandafter\endgroup
+\fi
+%</driver>
+%
+%<*driver|class>
+\RequirePackage{expl3,xparse}
+%</driver|class>
+%
+%<*driver>
+
+\ProvidesFile{uqsreport.dtx}
+
+\documentclass{l3doc}
+\usepackage{framed,lipsum,xspace}
+\usepackage{parskip}
+
+\usepackage{xcolor}
+\providecolor{uqspacenavy}{HTML}{0e1f66}
+
+\NewDocumentCommand \UQ { }{
+  U\kern-0.12emQ\xspace
+}
+
+\pdfstringdefDisableCommands{
+  \def\UQ{UQ}
+}
+
+\begin{document}
+  \DocInput{uqsreport.dtx}
+\end{document}
+
+%</driver>
+%
+% This isn't included in the typeset documentation because it's a bit
+% ugly:
+%<*class>
+\ProvidesExplClass{ uqsreport }{ 2020/03/27 }{ 1.0.2 }
+  { Technical Report template for use by UQ Space }
+%</class>
+% \fi
+%
+% \begin{documentation}
+%
+% \title  { The \cls{uqsreport} class }
+% \author { \UQ Space \TeX{}nical Group\thanks {
+%   E-mail: \href{mailto:info@uqspace.com.au}{\texttt{info@uqspace.com.au}}
+% } }
+% \date   { Released 2020-03-27 }
+%
+% \maketitle
+% \tableofcontents
+%
+% \section{Introduction}
+%
+% The \cls{uqsreport} class is designed to be used as the base class for the
+% majority of \UQ Space reports, both internal and external.
+% It contains multiple options to allow it to adapt to these different
+% requirements.
+%
+% \section{Class Options}
+%
+% \DescribeOption{comment}
+% User notes made using the \cs{comment} macro are show in the right margin of
+% the document. By default, when comments are enabled, the right margin is
+% extended by 2 inches and delimited with a red dashed line. If this option is
+% not enabled, the \cs{comment} macro is undefined.
+%
+% \DescribeOption{internal}
+% The cover page is disabled, allowing for smaller internal documents to be
+% written, usually a single path in length. It also enables certain
+% documentation requirements, such as version numbering.
+%
+% \end{documentation}
+%
+% \begin{implementation}
+%
+% \section{Implementation}
+%
+% \subsection{Title Customisation}
+%
+% Several packages are used in the creation of custom titles within
+% \cls{uqsreport}. For ease of use, the |x11names| option is given to
+% \pkg{xcolor}. As the headers and footers will also be customised, the
+% |pagestyles| option is passed to the \pkg{titlesec} package.
+%    \begin{macrocode}
+\RequirePackage [ table, x11names ] { xcolor   }
+\RequirePackage [ pagestyles ]      { titlesec }
+\RequirePackage                     { titletoc }
+\RequirePackage                     { tikz     }
+%    \end{macrocode}
+% \UQ Space navy {\fboxsep 0pt {\colorbox[HTML]{0e1f66}{\phantom{XX}}}}
+% (|#0E1F66|) is defined, and assigned to various names. It is expected that
+% these colour definitions will vary as the class is developed.
+%    \begin{macrocode}
+\providecolor { uqspacenavy }{ HTML }{ 0E1F66 }
+
+\colorlet { section       }{ uqspacenavy }
+\colorlet { subsection    }{ uqspacenavy }
+\colorlet { subsubsection }{ uqspacenavy }
+\colorlet { paragraph     }{ uqspacenavy }
+%    \end{macrocode}
+% \end{implementation}
+% \Finale
