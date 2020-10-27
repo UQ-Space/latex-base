@@ -248,7 +248,7 @@
 %     NOTE: Use \secnum when available
 
 \appto \appendix {
-    \RenewDocumentCommand \titleprefix { } { App.~ }
+    \RenewDocumentCommand \titleprefix { } { Appendix }
     \setsecnum{A.I.i}
 }
 
