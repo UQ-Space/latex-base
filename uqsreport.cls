@@ -391,10 +391,10 @@
 \RequirePackage{import}                                   % <--- Requires this!
 
 \let\oldimport\import
-\RenewDocumentCommand \import { mm }{
-    \newpage
-    \oldimport { #1 }{ #2 }
-    \restorepagesize
+\RenewDocumentCommand \import { smm }{
+    \IfBooleanT { #1 }{ \newpage }
+    \oldimport { #2 }{ #3 }
+    \IfBooleanT { #1 }{ \restorepagesize }
     \relax
 }
 
