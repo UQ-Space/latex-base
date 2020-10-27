@@ -9,7 +9,7 @@
 \ProvidesExplPackage
   {uqspreamble}                                                 % - Name
   {2020/10/24}                                                  % - Date
-  {1.1.0}                                                       % - Version
+  {1.1.4}                                                       % - Version
   {Report preamble list for use by UQ Space}                    % - Description
 
 %% ============================================================================
@@ -169,11 +169,11 @@
   \oldthead { #2 }
 }
 
-\newcolumntype { C }[ 1 ]{ >{ \Centering\arraybackslash   } p { #1 } }
-\newcolumntype { R }[ 1 ]{ >{ \RaggedLeft\arraybackslash  } p { #1 } }
-\newcolumntype { L }[ 1 ]{ >{ \RaggedRight\arraybackslash } p { #1 } }
+\newcolumntype { C }[ 1 ]{ >{ \Centering\arraybackslash   } m { #1 } }
+\newcolumntype { R }[ 1 ]{ >{ \RaggedLeft\arraybackslash  } m { #1 } }
+\newcolumntype { L }[ 1 ]{ >{ \RaggedRight\arraybackslash } m { #1 } }
 
-\newcolumntype { M }[ 1 ]{ >{ \RaggedRight\arraybackslash } m { #1 } }
+\newcolumntype { P }[ 1 ]{ >{ \RaggedRight\arraybackslash } p { #1 } }
 \newcolumntype { B }[ 1 ]{ >{ \RaggedRight\arraybackslash } b { #1 } }
 
 \newcolumntype { E }[ 1 ]{ >{ \begin{tblEnum} } L { #1 } <{ \end{tblEnum} } }
