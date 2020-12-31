@@ -1,0 +1,277 @@
+\NeedsTeXFormat{LaTeX2e}
+\RequirePackage{expl3}                                 % - Load LaTeX3 packages
+
+
+%% ============================================================================
+%%                           ~~~ CLASS META-INFO ~~~
+%% ____________________________________________________________________________
+
+\ProvidesExplPackage
+    {uqspace-preamble}                                          % - Name
+    {2020/12/31}                                                % - Date
+    {1.4.0}                                                     % - Version
+    {Report preamble list for use by UQ Space}                  % - Description
+
+%% ============================================================================
+
+
+
+%% ============================= General packages =============================
+
+\RequirePackage { parskip    }    % Improves paragraph spacing
+\RequirePackage { geometry   }
+\RequirePackage { afterpage  }
+\RequirePackage { ragged2e   }
+\RequirePackage [ table, x11names ]{ xcolor }
+
+\RequirePackage { microtype  }    % Tweak font spacing for aesthetics
+
+\RequirePackage { multicol   }    % Multiple columns Environment
+\RequirePackage { acro       }    % Acronyms and list-of-acronyms
+\RequirePackage { genmpage   }    % Minipage options
+\RequirePackage [ strict ]{ changepage }
+\RequirePackage [ margin-comments ]{ paperchange }
+
+\RequirePackage { import     }
+\RequirePackage { pdfpages   }    % Allows inclusion of non-tex pdfs
+
+
+%% ----------------------------- General commands -----------------------------
+
+% -- Create possessive endings for acronyms
+
+\DeclareAcroEnding { possessive } { 's } { 's }
+\NewAcroCommand \acg { m }{
+    \acropossessive \UseAcroTemplate { first }{ #1 }
+}
+
+\linespread{1.15}                      % Nicer linespreading
+\setcounter{tocdepth}{3}               % Count 3 levels within TOC
+
+\NewDocumentCommand \frontmatter { }{
+    \pagenumbering{roman}
+    \pagestyle{plain}
+}
+
+\NewDocumentCommand \mainmatter { }{
+    \pagenumbering{arabic}
+    \pagestyle{headings}
+}
+
+%% ============================================================================
+
+
+
+%% ========================= Maths & Science packages =========================
+
+\RequirePackage{
+  amsmath, amssymb,
+  amsthm,  amsfonts
+}
+\RequirePackage[                   % Consistent formatting of SI Units
+  per-mode=symbol,                 % ~ e.g. \SI{8314}{\kJ\per\kg\per\K},
+  separate-uncertainty=true,       % ~      \num{1e6}, \ang{45}, etc...
+  multi-part-units=single
+]               { siunitx       }
+\RequirePackage { mathtools     }  % Space tweaking within maths
+\RequirePackage { chemformula   }  % Chemical equations -> e.g. \ch{H20}
+\RequirePackage { bm            }  % Bold maths symbols -> e.g. \bm{\alpha}
+\RequirePackage { xfrac         }  % Use \sfrac{}{} for slanted fractions
+\RequirePackage { esint         }  % Gives nicer integration symbols
+\RequirePackage { cancel        }  % Gives \cancelto{val}{var}
+\RequirePackage [ super ] { nth }  % Ordinal indicators, with superscript
+                                   % ~ e.g \nth{1} gives 1^st
+\RequirePackage { circledsteps  }
+\RequirePackage { skmath        }  % Extensive simple math commands
+
+%% ------------------------- Maths & Science commands -------------------------
+
+\numberwithin { equation }{ section }
+
+\let\vec\bm  % Use bold notation for vectors
+
+\DeclareSIUnit \ft { ft }                % \inch and \ft for imperial units
+\DeclareSIUnit [ number-unit-product = \thinspace ] \inch { in }
+\DeclareSIUnit \aud { \textsc{Aud}\thinspace\$ }
+\DeclareSIUnit \usd { \textsc{USD}\thinspace\$ }
+
+%% ============================================================================
+
+
+
+%% ============================= Figure packages ==============================
+
+\RequirePackage { graphicx    }
+\RequirePackage { tikz        }
+\RequirePackage { tikz-3dplot }
+\RequirePackage { svg         }
+
+\RequirePackage { float      }
+\RequirePackage [ export ]{ adjustbox }
+\RequirePackage { caption    }
+\RequirePackage { subcaption }
+
+%% ----------------------------- Figure commands ------------------------------
+
+\graphicspath   { { images/ } }
+\ExplSyntaxOff  % --> Tikz relies on spaces too much
+\usetikzlibrary{arrows.meta,scopes,positioning,fadings,backgrounds,fit,calc,chains}
+\ExplSyntaxOn   % <--
+
+\captionsetup {
+    format         = hang,
+    figurewithin   = section,
+    tablewithin    = section,
+    figureposition = below,
+    tableposition  = above,
+    justification  = raggedright,
+    skip           = 5pt,
+    font           = small
+}
+
+\tikzset{debug~grid/.style = {
+    step = 1.0,
+    draw = gray!50,
+    very~thin,
+    overlay
+}}
+
+%% ============================================================================
+
+
+
+%% ============================== Table packages ==============================
+
+\RequirePackage { array    }        % For customisation of tables
+\RequirePackage { booktabs }        % Horizontal rules in tables
+\RequirePackage { multirow }
+\RequirePackage { makecell }        % Robust table cells -> e.g. \makecell
+                                    % ~ Allows for line-breaks within cells
+                                    % ~ Use \thead{...} for column names
+
+\RequirePackage { rotating       }  % Rotate cells with \begin{sideways}...
+\RequirePackage { longtable      }  % Tables that go over multiple pages
+\RequirePackage { threeparttable }  % Tables that allow for notes below
+\RequirePackage { tablefootnote  }  % Allows for footnotes within tables
+
+%% ------------------------------ Table commands ------------------------------
+
+\robustify    \thead
+\renewcommand \theadfont { \itshape }
+\renewcommand \arraystretch { 1.2 }    % Spread rows out by 20%
+
+\newcolumntype { C }[ 1 ]{ >{ \Centering\arraybackslash   } m { #1 } }
+\newcolumntype { R }[ 1 ]{ >{ \RaggedLeft\arraybackslash  } m { #1 } }
+\newcolumntype { L }[ 1 ]{ >{ \RaggedRight\arraybackslash } m { #1 } }
+
+\newcolumntype { P }[ 1 ]{ >{ \RaggedRight\arraybackslash } p { #1 } }
+\newcolumntype { B }[ 1 ]{ >{ \RaggedRight\arraybackslash } b { #1 } }
+
+\newcolumntype { E }[ 1 ]{ >{ \begin{tblEnum} } L { #1 } <{ \end{tblEnum} } }
+\newcolumntype { I }[ 1 ]{ >{ \begin{tblItem} } L { #1 } <{ \end{tblItem} } }
+
+%% ============================================================================
+
+
+
+%% ============================== List packages ===============================
+
+\RequirePackage [ inline ]{ enumitem }  % For customisation of lists
+\RequirePackage { etoolbox }
+
+%% ------------------------------ List commands -------------------------------
+
+
+% --- Remove line spacing between items
+\setlist { noitemsep }
+
+% --- Remove all vertical spacing in itemize
+\setitemize { nosep, label=\textbullet }
+
+% --- Create enumerate for within tables
+\newlist { tblEnum }{ enumerate }{ 2 }
+\setlist [ tblEnum ]{
+    nosep,
+    leftmargin = 3.5ex,
+    label      =\arabic*.,
+    labelwidth = 2.5ex,
+    before*    ={\mbox{}\vspace{-\baselineskip}},
+    before*    =\preto\thead{\item[]},
+    after      =\vspace{-\baselineskip}
+}
+
+% --- Create itemize for within tables
+\newlist { tblItem }{ itemize }{ 2 }
+\setlist [ tblItem ]{
+    nosep,
+    leftmargin = 3.5ex,
+    labelwidth = 2.5ex,
+    label      =\textbullet,
+    before*    ={\mbox{}\vspace{-\baselineskip}},
+    before*    =\preto\thead{\item[]},
+    after      =\vspace{-\baselineskip}
+}
+
+% --- Create description for List of Acronyms
+\NewDocumentCommand \addcolon { m }{ #1: }
+\newlist { acronyms }{ description }{ 2 }
+\setlist [ acronyms ]{
+    noitemsep,
+    font       =\addcolon,
+    labelwidth = 5em,
+    leftmargin = 6.5em,
+    itemindent = 0pt,
+}
+
+% \DeclareAcroListStyle { mystyle }{ list }{ list = acronyms }
+\acsetup { list/template = description, list/name = Nomenclature }
+
+%% ============================================================================
+
+
+
+%% ============================== Code packages ===============================
+
+\RequirePackage { minted        }
+\RequirePackage { algpseudocode }
+
+%% ------------------------------ Code commands -------------------------------
+
+\renewcommand \listoflistingscaption { List of source codes }
+
+\usemintedstyle { friendly }
+\setminted [ python ] {
+    tabsize  = 4,
+	fontsize =\footnotesize,
+	frame    = lines,
+	framesep = 0.5em,
+	obeytabs,
+	linenos
+}
+
+%% ============================================================================
+
+
+
+%% =========================== Referencing packages ===========================
+
+\RequirePackage [ hyphens              ] { url      }  % breaks urls at hyphens
+\RequirePackage [ hidelinks            ] { hyperref }
+\RequirePackage [ noabbrev, capitalise ] { cleveref }
+
+\RequirePackage { csquotes }
+\RequirePackage [ english ]{ babel }
+\RequirePackage [
+    natbib,
+    backend   = biber,
+    style     = apa,
+    citestyle = apa
+]{ biblatex }
+\DeclareLanguageMapping { english }{ english-apa }
+\setcounter { biburlucpenalty }{ 10000 }
+
+%% --------------------------- Referencing commands ---------------------------
+
+% \providecommand \phantomsection \relax
+
+%% ============================================================================
