@@ -7,5 +7,5 @@ test.*
 **.cls
 
 # Focus on developed packages
-!uqspreamble.sty
-!uqsreport.cls
+!uqspace-preamble.sty
+!uqspace-style.sty
