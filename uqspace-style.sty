@@ -307,9 +307,11 @@
 
             \node [ fit=(project)(document), outer~sep=10mm ] ( wrapper ) { };
 
-            \draw [ white, semi thick ]
-                ( wrapper . west |- team . center ) -- ( team . west )
-                ( wrapper . east |- team . center ) -- ( team . east );
+            \begin { scope }[ white, semi thick ]
+                \draw ( wrapper . west |- team . center )   -- ( team . west );
+                \draw ( wrapper . east |- team . center )   -- ( team . east );
+                \ifThe { name } \else \draw ( team . west ) -- ( team . east ); \fi
+            \end { scope }
 
         \end { scope }
 
