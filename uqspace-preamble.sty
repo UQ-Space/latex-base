@@ -45,6 +45,10 @@
     \acropossessive \UseAcroTemplate { first }{ #1 }
 }
 
+\NewAcroTemplate [ heading ]{ subsection* }{
+    \subsection* { \acrolistname }
+}
+
 \linespread{1.15}                      % Nicer linespreading
 \setcounter{tocdepth}{3}               % Count 3 levels within TOC
 
