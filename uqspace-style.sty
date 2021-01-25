@@ -8,8 +8,8 @@
 
 \ProvidesExplPackage
     {uqspace-style}                                             % - Name
-    {2020/12/31}                                                % - Date
-    {2.0.0}                                                     % - Version
+    {2021/01/25}                                                % - Date
+    {2.0.1}                                                     % - Version
     {Styling package for UQ Space Reports}                      % - Description
 
 
@@ -155,7 +155,7 @@
 
 % --- Customise formatting for \part, \section, \subsection & \subsubsection
 \newcommand \titleprefix { }
-% \assignpagestyle { \part }{ empty }
+\newcommand \partprefix  { Part }
 
 \titleclass  \part { page }
 \titleformat \part [ display ]
@@ -168,12 +168,12 @@
             \includesvg[ width=\paperwidth, inkscapearea=page ]{images/starcover_filled.svg} };
 
         % Number tab
-        \titletab { Part }{ \thepart }
+        \titletab { \partprefix }{ \thepart }
 
         % Title text, enlarged and wrapped
         \path let \p1 = ($(current~page.east)-(tab.east)$), \n1 = {\x1/3 - 2*\tabsep} in
         node [
-            text=uqpurple, font=\Large\sffamily\bfseries,
+            text=uqpurple, font=\Large\sffamily\bfseries\scshape,
             text~width=\n1, align=left,
             anchor=base~west, inner~sep=0mm,
             enlarge
@@ -354,7 +354,11 @@
 
 \appto \appendix {
     \renewcommand \titleprefix { Appendix }
-    \setsecnum { A.I.i }
+    \setsecnum { A.1.i }
+    \begingroup
+    \renewcommand \partprefix  { \empty }
+    \part* { Appendices }
+    \endgroup
 }
 
 \NewDocumentCommand \textchunky { m }{
@@ -436,11 +440,10 @@
 % --- Reset page sizing after importing each section, for consistency
 
 \let\oldimport\import
-\RenewDocumentCommand \import { mm }{
+\RenewDocumentCommand \import { smm }{
     \newpage
-    \oldimport { #1 }{ #2 }
-    \newpage
-    \setpagesize{A4}[port]
+    \oldimport { #2 }{ #3 }
+    \IfBooleanTF { #1 }{  }{ \newpage \restorepagesize }
 }
 
 
@@ -465,9 +468,13 @@
 %     short and long forms of the acronyms respectively. Has an optional
 %     argument representing the class the acronyms belong to.
 
-\NewDocumentCommand \AddAcronyms { om } {
+\NewDocumentCommand \AddAcronyms { O{} m } {
     \acr_set_class:n { #1 }
     \keyval_parse:NNn \use_none:n \acr_new_acro:nn { #2 }
+}
+
+\NewDocumentCommand \addacronymfile { m }{
+    \oldimport { ./ }{ #1 }
 }
 
 %% Junk
