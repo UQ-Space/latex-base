@@ -8,8 +8,8 @@
 
 \ProvidesExplPackage
     {uqspace-style}                                             % - Name
-    {2021/01/25}                                                % - Date
-    {2.1.2}                                                     % - Version
+    {2021/03/01}                                                % - Date
+    {2.2.0}                                                     % - Version
     {Styling package for UQ Space Reports}                      % - Description
 
 
@@ -265,12 +265,17 @@
     \end { scope }
 }
 
-\RenewDocumentCommand \maketitle { } {
+\RenewDocumentCommand \maketitle { o } {
     \begin { title page } \begin { tikz picture }[ remember~picture, overlay ]
 
         \begin { scope }
             % Darkens uq purple for 'night sky' effect
-            \colorlet { uq purple }{ uq purple!60!black }
+            \str_if_eq:nnTF { #1 }{ light }{
+                \colorlet { light purple }{ white }
+                \colorlet {    uq purple }{ white }
+            }{
+                \colorlet {    uq purple }{ uq purple!60!black }
+            }
 
             % Set background colour of page
             \fill [ uq purple ]
@@ -279,7 +284,9 @@
             % Add stars to background (sourced from svg)
             \node ( starmap ) at ( current~page . center ) {
                 % Limit to the width of the page, and trim excess constellation lines
-                \includesvg[ width=\paperwidth, inkscapearea=page ]{ images/starcover.svg }
+                \includesvg[ width=\paperwidth, inkscapearea=page ]{ 
+                    images/starcover \str_if_eq:nnT { #1 }{ light }{ _filled } .svg 
+                }
             };
 
             % Add the uq gradient overlay
@@ -289,16 +296,21 @@
         \end { scope }
 
         \begin { scope }[
-            node~distance=1ex, white,
+            node~distance=1ex, \str_if_eq:nnTF { #1 }{ light }{ uq purple }{ white },
             font={\fontfamily \sfdefault \fontseries{el} \selectfont}
         ]
             % UQ Space Logo (inversed)
-            \node [ below=13mm~of~current~page.north ] ( uqs logo )
-                { \includesvg [ width=0.9\paperwidth ]{ packages/uqspace-logo.svg } };
+            \node [ below=13mm~of~current~page.north ] ( uqs logo ){ 
+                \includesvg [ width=0.9\paperwidth ]{ 
+                    packages/uqspace-logo \str_if_eq:nnT { #1 }{ light }{ -gradient } .svg 
+                } 
+            };
 
             % UQ Lockup Logo (inversed)
-            \node [ above=of~current~page.south, inner~sep=15mm ] ( uq lockup )
-                { \includesvg [ width=0.8\paperwidth ]{ packages/uq-lockup.svg } };
+            \node [ above=of~current~page.south, inner~sep=15mm ] ( uq lockup ){ \includesvg [ width=0.8\paperwidth ]{ 
+                    packages/uq-lockup \str_if_eq:nnT { #1 }{ light }{ -purple } .svg 
+                } 
+            };
 
             % Title block
             \node [ above=of~uq lockup ] ( project  ) { \huge          \The { project  } };
@@ -307,7 +319,9 @@
 
             \node [ fit=(project)(document), outer~sep=10mm ] ( wrapper ) { };
 
-            \begin { scope }[ white, semi thick ]
+            \begin { scope }[
+                \str_if_eq:nnTF { #1 }{ light }{ uq purple }{ white }, semi thick
+            ]
                 \draw ( wrapper . west |- team . center )   -- ( team . west );
                 \draw ( wrapper . east |- team . center )   -- ( team . east );
                 \ifThe { team } \else \draw ( team . west ) -- ( team . east ); \fi
