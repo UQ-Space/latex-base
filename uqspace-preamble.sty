@@ -7,10 +7,10 @@
 %% ____________________________________________________________________________
 
 \ProvidesExplPackage
-    {uqspace-preamble}                                          % - Name
-    {2020/12/31}                                                % - Date
-    {1.4.0}                                                     % - Version
-    {Report preamble list for use by UQ Space}                  % - Description
+  {uqspace-preamble}                                            % - Name
+  {2020/06/07}                                                  % - Date
+  {1.1.0}                                                       % - Version
+  {Report preamble list for use by UQ Space}                    % - Description
 
 %% ============================================================================
 
@@ -18,25 +18,57 @@
 
 %% ============================= General packages =============================
 
-\RequirePackage { parskip    }    % Improves paragraph spacing
+\RequirePackage { parskip    }         % Improves paragraph spacing
 \RequirePackage { geometry   }
 \RequirePackage { afterpage  }
 \RequirePackage { ragged2e   }
 \RequirePackage [ table, x11names ]{ xcolor }
 
-\RequirePackage { microtype  }    % Tweak font spacing for aesthetics
+\RequirePackage { microtype    }       % Tweak font spacing for aesthetics
+\RequirePackage { fontawesome5 }
 
-\RequirePackage { multicol   }    % Multiple columns Environment
-\RequirePackage { acro       }    % Acronyms and list-of-acronyms
-\RequirePackage { genmpage   }    % Minipage options
+\RequirePackage { multicol   }         % Multiple columns Environment
+\RequirePackage { genmpage   }         % Minipage options
 \RequirePackage [ strict ]{ changepage }
 \RequirePackage [ margin-comments ]{ paperchange }
 
 \RequirePackage { import     }
-\RequirePackage { pdfpages   }    % Allows inclusion of non-tex pdfs
+\RequirePackage { pdfpages   }         % Allows inclusion of non-tex pdfs
 
 
 %% ----------------------------- General commands -----------------------------
+
+\linespread { 1.15 }                   % Nicer linespreading
+\setcounter { tocdepth }{ 3 }          % Count 3 levels within TOC
+
+\NewDocumentCommand \frontmatter { }{
+    \pagenumbering { roman }
+    \pagestyle     { plain }
+}
+
+\NewDocumentCommand \mainmatter { }{
+    \pagenumbering { arabic   }
+    \pagestyle     { headings }
+}
+
+% --- Reset page sizing after importing each section, for consistency
+
+\let\oldimport\import
+\RenewDocumentCommand \import { smm }{
+    \newpage
+    \oldimport { #2 }{ #3 }
+    \IfBooleanTF { #1 }{  }{ \newpage \restorepagesize }
+}
+
+%% ============================================================================
+
+
+
+%% ============================= Acronym packages =============================
+
+\RequirePackage { acro }               % Acronyms and list-of-acronyms
+
+%% ----------------------------- Acronym commands -----------------------------
 
 % -- Create possessive endings for acronyms
 
@@ -49,17 +81,31 @@
     \subsection* { \acrolistname }
 }
 
-\linespread{1.15}                      % Nicer linespreading
-\setcounter{tocdepth}{3}               % Count 3 levels within TOC
+% --- Creates function that takes two values, and creates an acronym belonging
+%     to a given class.
 
-\NewDocumentCommand \frontmatter { }{
-    \pagenumbering{roman}
-    \pagestyle{plain}
+\cs_new:Nn \acr_new_acro:nn { }
+\cs_new:Nn \acr_set_class:n {
+    \cs_gset:Nn \acr_new_acro:nn {
+        \DeclareAcronym { ##1 } {
+            short = { ##1 },
+            long  = { ##2 },
+            tag   = {  #1 }
+        }
+    }
 }
 
-\NewDocumentCommand \mainmatter { }{
-    \pagenumbering{arabic}
-    \pagestyle{headings}
+% --- Takes a list of key-value arguments, with each key and values being the
+%     short and long forms of the acronyms respectively. Has an optional
+%     argument representing the class the acronyms belong to.
+
+\NewDocumentCommand \AddAcronyms { O{} m } {
+    \acr_set_class:n { #1 }
+    \keyval_parse:NNn \use_none:n \acr_new_acro:nn { #2 }
+}
+
+\NewDocumentCommand \addacronymfile { m }{
+    \oldimport { ./ }{ #1 }
 }
 
 %% ============================================================================
@@ -72,21 +118,21 @@
   amsmath, amssymb,
   amsthm,  amsfonts
 }
-\RequirePackage[                   % Consistent formatting of SI Units
-  per-mode=symbol,                 % ~ e.g. \SI{8314}{\kJ\per\kg\per\K},
-  separate-uncertainty=true,       % ~      \num{1e6}, \ang{45}, etc...
+\RequirePackage[                       % Consistent formatting of SI Units
+  per-mode=symbol,                     % ~ e.g. \SI{8314}{\kJ\per\kg\per\K},
+  separate-uncertainty=true,           % ~      \num{1e6}, \ang{45}, etc...
   multi-part-units=single
-]               { siunitx       }
-\RequirePackage { mathtools     }  % Space tweaking within maths
-\RequirePackage { chemformula   }  % Chemical equations -> e.g. \ch{H20}
-\RequirePackage { bm            }  % Bold maths symbols -> e.g. \bm{\alpha}
-\RequirePackage { xfrac         }  % Use \sfrac{}{} for slanted fractions
-\RequirePackage { esint         }  % Gives nicer integration symbols
-\RequirePackage { cancel        }  % Gives \cancelto{val}{var}
-\RequirePackage [ super ] { nth }  % Ordinal indicators, with superscript
-                                   % ~ e.g \nth{1} gives 1^st
-\RequirePackage { circledsteps  }
-\RequirePackage { skmath        }  % Extensive simple math commands
+]               { siunitx      }
+\RequirePackage { mathtools    }       % Space tweaking within maths
+\RequirePackage { chemformula  }       % Chemical equations -> e.g. \ch{H20}
+\RequirePackage { bm           }       % Bold maths symbols -> e.g. \bm{\alpha}
+\RequirePackage { xfrac        }       % Use \sfrac{}{} for slanted fractions
+\RequirePackage { esint        }       % Gives nicer integration symbols
+\RequirePackage { cancel       }       % Gives \cancelto{val}{var}
+\RequirePackage [ super ]{ nth }       % Ordinal indicators, with superscript
+                                       % ~ e.g \nth{1} gives 1^st
+\RequirePackage { circledsteps }
+\RequirePackage { skmath       }       % Extensive simple math commands
 
 %% ------------------------- Maths & Science commands -------------------------
 
@@ -146,17 +192,17 @@
 
 %% ============================== Table packages ==============================
 
-\RequirePackage { array    }        % For customisation of tables
-\RequirePackage { booktabs }        % Horizontal rules in tables
+\RequirePackage { array    }           % For customisation of tables
+\RequirePackage { booktabs }           % Horizontal rules in tables
 \RequirePackage { multirow }
-\RequirePackage { makecell }        % Robust table cells -> e.g. \makecell
-                                    % ~ Allows for line-breaks within cells
-                                    % ~ Use \thead{...} for column names
+\RequirePackage { makecell }           % Robust table cells -> e.g. \makecell
+                                       % ~ Allows for line-breaks within cells
+                                       % ~ Use \thead{...} for column names
 
-\RequirePackage { rotating       }  % Rotate cells with \begin{sideways}...
-\RequirePackage { longtable      }  % Tables that go over multiple pages
-\RequirePackage { threeparttable }  % Tables that allow for notes below
-\RequirePackage { tablefootnote  }  % Allows for footnotes within tables
+\RequirePackage { rotating       }     % Rotate cells with \begin{sideways}...
+\RequirePackage { longtable      }     % Tables that go over multiple pages
+\RequirePackage { threeparttable }     % Tables that allow for notes below
+\RequirePackage { tablefootnote  }     % Allows for footnotes within tables
 
 %% ------------------------------ Table commands ------------------------------
 
@@ -268,8 +314,8 @@
 \RequirePackage [
     natbib,
     backend   = biber,
-    style     = authoryear,
-    citestyle = authoryear
+    style     = numeric-comp,
+    citestyle = numeric-comp
 ]{ biblatex }
 \setcounter { biburlucpenalty }{ 10000 }
 
