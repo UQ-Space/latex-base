@@ -9,7 +9,7 @@
 \ProvidesExplPackage
     {uqspace-style}                                             % - Name
     {2021/03/01}                                                % - Date
-    {2.2.0}                                                     % - Version
+    {2.3.0}                                                     % - Version
     {Styling package for UQ Space Reports}                      % - Description
 
 
@@ -284,8 +284,8 @@
             % Add stars to background (sourced from svg)
             \node ( starmap ) at ( current~page . center ) {
                 % Limit to the width of the page, and trim excess constellation lines
-                \includesvg[ width=\paperwidth, inkscapearea=page ]{ 
-                    images/starcover \str_if_eq:nnT { #1 }{ light }{ _filled } .svg 
+                \includesvg[ width=\paperwidth, inkscapearea=page ]{
+                    images/starcover \str_if_eq:nnT { #1 }{ light }{ _filled } .svg
                 }
             };
 
@@ -300,16 +300,16 @@
             font={\fontfamily \sfdefault \fontseries{el} \selectfont}
         ]
             % UQ Space Logo (inversed)
-            \node [ below=13mm~of~current~page.north ] ( uqs logo ){ 
-                \includesvg [ width=0.9\paperwidth ]{ 
-                    packages/uqspace-logo \str_if_eq:nnT { #1 }{ light }{ -gradient } .svg 
-                } 
+            \node [ below=13mm~of~current~page.north ] ( uqs logo ){
+                \includesvg [ width=0.9\paperwidth ]{
+                    packages/uqspace-logo \str_if_eq:nnT { #1 }{ light }{ -gradient } .svg
+                }
             };
 
             % UQ Lockup Logo (inversed)
-            \node [ above=of~current~page.south, inner~sep=15mm ] ( uq lockup ){ \includesvg [ width=0.8\paperwidth ]{ 
-                    packages/uq-lockup \str_if_eq:nnT { #1 }{ light }{ -purple } .svg 
-                } 
+            \node [ above=of~current~page.south, inner~sep=15mm ] ( uq lockup ){ \includesvg [ width=0.8\paperwidth ]{
+                    packages/uq-lockup \str_if_eq:nnT { #1 }{ light }{ -purple } .svg
+                }
             };
 
             % Title block
@@ -447,71 +447,3 @@
     \end { minipage }
     \hfill
 }
-
-
-%% ------------------ Resize and reorient pages mid-document ------------------
-
-% --- Reset page sizing after importing each section, for consistency
-
-\let\oldimport\import
-\RenewDocumentCommand \import { smm }{
-    \newpage
-    \oldimport { #2 }{ #3 }
-    \IfBooleanTF { #1 }{  }{ \newpage \restorepagesize }
-}
-
-
-%% ----------------- Define classes of basic acronyms en-mass -----------------
-
-% --- Creates function that takes two values, and creates an acronym belonging
-%     to a given class.
-
-\cs_new:Nn \acr_new_acro:nn { }
-\cs_new:Nn \acr_set_class:n {
-    \cs_gset:Nn \acr_new_acro:nn {
-        \DeclareAcronym { ##1 } {
-            short = { ##1 },
-            long  = { ##2 },
-            tag   = {  #1 }
-        }
-    }
-}
-
-
-% --- Takes a list of key-value arguments, with each key and values being the
-%     short and long forms of the acronyms respectively. Has an optional
-%     argument representing the class the acronyms belong to.
-
-\NewDocumentCommand \AddAcronyms { O{} m } {
-    \acr_set_class:n { #1 }
-    \keyval_parse:NNn \use_none:n \acr_new_acro:nn { #2 }
-}
-
-\NewDocumentCommand \addacronymfile { m }{
-    \oldimport { ./ }{ #1 }
-}
-
-%% Junk
-
-% \NewDocumentCommand \titleblock { }{
-%     % General formatting
-%     \centering \fontfamily \sfdefault \fontseries{el} \selectfont
-
-%     { \large \bfseries \scshape
-%     \ifThe { competition } \The{ competition } \\[1ex] \fi
-%     }
-
-%     { \Huge \scshape
-%     \The{document} \\[0.5ex]
-%     }
-
-%     \ifThe{team} { \large
-%         \rule[0.6ex]{0.32\textwidth}{.4pt}
-%         \enspace \The{team} \enspace
-%         \rule[0.6ex]{0.32\textwidth}{.4pt}
-%     } \else { \large
-%         \rule[0.6ex]{0.80\textwidth}{.4pt}
-%     } \fi \\[1.6ex]
-
-%     { \huge \The{project}\\ }
-% }
