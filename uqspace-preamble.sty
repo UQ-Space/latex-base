@@ -55,7 +55,7 @@
 
 \let\oldimport\import
 \RenewDocumentCommand \import { smm }{
-    \newpage
+    \IfBooleanTF { #1 }{  }{ \newpage }
     \oldimport { #2 }{ #3 }
     \IfBooleanTF { #1 }{  }{ \newpage \restorepagesize }
 }
