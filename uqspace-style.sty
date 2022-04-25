@@ -9,7 +9,7 @@
 \ProvidesExplPackage
     {uqspace-style}                                             % - Name
     {2021/03/01}                                                % - Date
-    {2.3.0}                                                     % - Version
+    {2.3.1}                                                     % - Version
     {Styling package for UQ Space Reports}                      % - Description
 
 
@@ -72,12 +72,12 @@
 \RequirePackage { tikz }
 
 \RequirePackage [ T1 ]{ fontenc }
-\RequirePackage [ light, tabular ]{ roboto }  % Roboto set as serif font family
 
 %% ----------------------------------------------------------------------------
 
 % -- UQ Accepted Fonts
 
+\RequirePackage [ light, tabular ]{ roboto }  % Roboto set as serif font family
 \DeclareFontShape { T1 }{ cmr }{ c }{ n }{ <->ssub*cmr/m/n }{ }
 \renewcommand \seriesdefault { m }  % Set main font back to CMU
 
@@ -148,9 +148,18 @@
 
 % --- Set text for section label, and reduce spacing of TOC appearance
 
-\titlecontents { section }[ 1.5em ]{ \bfseries \vspace { 1ex } }
-    { \contentslabel { 3ex } }{ }
+\titlecontents { part }[ 0ex ]{ \large \itshape \vspace { 3ex } }
+    { \contentslabel { 0ex } }{ }
+    { \hfill \contentspage }[ \vspace { 0.5ex } ]
+
+\titlecontents { section }[ 4ex ]{ \bfseries \vspace { 1ex } }
+    { \contentslabel { 4ex } }{ }
     { \hfill \contentspage }[ \vspace { 1ex } ]
+
+\dottedcontents { figure        }[ 10ex ]{ }{ 6ex }{ 2.5mm }
+\dottedcontents { table         }[ 10ex ]{ }{ 6ex }{ 2.5mm }
+\dottedcontents { subsection    }[ 10ex ]{ }{ 6ex }{ 2.5mm }
+\dottedcontents { subsubsection }[ 18ex ]{ }{ 8ex }{ 2.5mm }
 
 
 % --- Customise formatting for \part, \section, \subsection & \subsubsection
@@ -408,10 +417,10 @@
 \NewDocumentCommand \underlinedTitle { s O{#3} m }{
     \group_begin:
     \titleformat \section
-        { \color {subsection} \LARGE \bfseries}
+        { \color { uq purple } \LARGE \bfseries}
         { \thetitle \quad }
         { 2em }
-        { \vspace{1em} \filcenter }
+        { \vspace{1em} \filcenter ##1 }
         [\titlerule\relax]
     \IfBooleanTF { #1 }
         { \section*{#3} }
