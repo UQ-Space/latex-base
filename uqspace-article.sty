@@ -1,0 +1,400 @@
+\NeedsTeXFormat{LaTeX2e}
+\RequirePackage{expl3}                                 % - Load LaTeX3 packages
+
+
+%% ============================================================================
+%%                          ~~~ CLASS META-INFO ~~~
+%% ____________________________________________________________________________
+
+\ProvidesExplPackage
+    {uqspace-article}                                           % - Name
+    {2022/12/17}                                                % - Date
+    {2.0.0}                                                     % - Version
+    {Article class for use by UQ Space}                         % - Description
+
+%% ============================================================================
+
+
+
+%% ============================= LaTeX3 Packages  =============================
+
+% Required package information:
+%
+%   xparse   -> Allows for custom macros with a range of inputs, including
+%               custom defaults, stars, delimiters, etc.
+%
+%   xspace   -> Detection of spaces and punctuation gobbled by a macro, and
+%               replacement of said text naturally.
+
+%% ----------------------------------------------------------------------------
+
+\RequirePackage { xparse   }
+\RequirePackage { xspace   }
+\RequirePackage { l3keys2e }
+\RequirePackage { themeta  }
+
+%% ----------------------------------------------------------------------------
+
+\keys_define:nn { style-options }{
+    unknown .code:n = { \exp_args:Nx \meta_subset:nn { \l_keys_key_str }{ #1 } }
+}
+
+\ProcessKeysPackageOptions { style-options }
+
+%% ============================================================================
+
+
+
+%% ====================== UQ Brand Guidelines Adherance =======================
+
+% The following definitions are designed to meet the UQ Brand Guidelines as of
+% December 2020 (released March 2019). The primary and secondary colours are
+% defined, along with the signature gradients.
+%
+% Required package information:
+%
+%   xcolor   -> Creation of custom colours from a variety of input types (RGB,
+%               HSV, etc.) Colours can be saved to given names. The [table]
+%               option creates the `\rowcolor` macro, for colouring table rows.
+%               Caution must be used when colouring rows with `booktabs`, as
+%               the colouring will have gaps. The [x11names] option gives
+%               access to colours via the common x11 naming scheme.
+%
+%   tikz     -> Full LaTeX graphics language, which allows for creation and
+%               manipulation of nearly any graphical object. No options are
+%               required for `tikz`, however extra modules are loaded through
+%               the `\usetikzlibrary` macro. Modules are loaded as required.
+
+%% ----------------------------------------------------------------------------
+
+\RequirePackage [ table, x11names ]{ xcolor }
+\RequirePackage { tikz }
+
+\RequirePackage [ T1 ]{ fontenc }
+
+%% ----------------------------------------------------------------------------
+
+% -- UQ Accepted Fonts
+
+\RequirePackage [ light, tabular ]{ roboto }  % Roboto set as serif font family
+\DeclareFontShape { T1 }{ cmr }{ c }{ n }{ <->ssub*cmr/m/n }{ }
+\renewcommand \seriesdefault { m }  % Set main font back to CMU
+
+% -- UQ Primary Colour
+
+\definecolor { uq purple    }{ HTML }{ 51247A }
+
+% -- UQ Secondary Colours
+
+\definecolor { light purple }{ HTML }{ 962A8B }
+\definecolor { red          }{ HTML }{ E62645 }
+\definecolor { green        }{ HTML }{ 2EA836 }
+\definecolor { gold         }{ HTML }{ BB9D65 }
+\definecolor { orange       }{ HTML }{ EB602B }
+\definecolor { yellow       }{ HTML }{ FBB800 }
+\definecolor { blue         }{ HTML }{ 4085C6 }
+\definecolor { aqua         }{ HTML }{ 00A2C7 }
+
+% -- UQ Neutral Tones
+
+\definecolor { neutral      }{ HTML }{ D7D1CC }
+\definecolor { dark grey    }{ HTML }{ 999490 }
+
+% -- UQ Purple Gradients
+
+\pgfdeclarehorizontalshading [ uq purple ]{ uq gradient east }{ 100 bp }{
+    color (   0 bp ) = (    uq purple );
+    color (  40 bp ) = (    uq purple );
+    color ( 100 bp ) = ( light purple )
+}
+
+\pgfdeclareverticalshading [ uq purple ]{ uq gradient south }{ 100 bp }{
+    color (   0 bp ) = ( light purple );
+    color (  80 bp ) = (    uq purple );
+    color ( 100 bp ) = (    uq purple )
+}
+
+\captionsetup {
+    textfont  = { sf, sl, color=uqpurple!60 },
+    labelfont = { sf, color=uqpurple }
+}
+
+\arrayrulecolor { uq purple }
+
+%% ============================================================================
+
+
+
+%% =================== Title & Header / Footer Customisation ==================
+
+% Required package information:
+%
+%   xcolor   -> Creation of custom colours from a variety of input types (RGB,
+%               HSV, etc.) Colours can be saved to given names. The [table]
+%               option creates the `\rowcolor` macro, for colouring table rows.
+%               Caution must be used when colouring rows with `booktabs`, as
+%               the colouring will have gaps. The [x11names] option gives
+%               access to colours via the common x11 naming scheme.
+%
+%   titlesec -> Customisation of title styles (section, subsection, etc.)
+%               Allows for creation of new title levels between existing
+%               titles. The [pagestyles] option provides a more simple and
+%               robust way to customise the header and footer, with extra marks
+%               provided.
+%
+%   titletoc -> Customisation of how different title styles appear in the TOC.
+
+%% ----------------------------------------------------------------------------
+
+\RequirePackage [ table, x11names ] { xcolor   }
+\RequirePackage [ pagestyles ]      { titlesec }
+\RequirePackage                     { titletoc }
+\RequirePackage                     { themeta  }
+\RequirePackage                     { secnum   }
+
+%% ----------------------------------------------------------------------------
+
+% --- Set the numbering of sections to
+%     Sections         -> I, II, III, ...
+%     Sub-sections     -> A, B, C, ...
+%     Sub-sub-sections -> i, ii, iii, ...
+
+\setsecnum { I.A.i }
+
+\colorlet {         section } { uq purple }
+\colorlet {     sub section } { uq purple }
+\colorlet { sub sub section } { uq purple }
+\colorlet {       paragraph } { uq purple }
+
+% --- Set text for section label, and reduce spacing of TOC appearance
+
+\NewDocumentCommand \titleprefix { }{ }
+\dottedcontents
+  { section }
+  [ 3.4ex ]
+  { \vspace { 1ex } \color { section } \bfseries }
+  { 3ex }
+  { 0pc }
+
+
+% --- Customise formatting for \section, \subsection & \subsubsection
+\titleformat \section
+  { \color { section } \bfseries \scshape \sffamily \centering }
+  { \Roman{section}.\enspace\textls*[-20] }
+  { 0ex }
+  { }
+
+\titleformat \subsection
+  { \color { sub section } \scshape \sffamily }
+  { \Alph{subsection}.\enspace }
+  { 0ex }
+  { }
+
+\titleformat \subsubsection
+  { \color { sub sub section } \itshape \sffamily }
+  { \arabic{subsubsection}.\enspace }
+  { 0ex }
+  { }
+
+\titleformat \paragraph
+  [ runin ]
+  { \color { paragraph } \bfseries }
+  { }
+  { 0ex }
+  { }
+
+
+% --- Customise spacing for \section, \subsection & \subsubsection
+
+\titlespacing \section       { 0ex }{ 1em }{ 1ex }
+\titlespacing \subsection    { 0ex }{ 1ex }{ 0.5ex }
+\titlespacing \subsubsection { 0ex }{ 1ex }{ 0.5ex }
+\titlespacing \paragraph     { 0ex }{ 1ex }{ 0.5ex }
+
+
+% --- Customise the header and footer respectively
+
+\widenhead { 5mm }{ 5mm }
+
+\def \projectTag { \The{team}~/~\The{project} }
+
+\newpagestyle { title }{
+    \sethead { } { } { }
+    \setfoot { } { \thepage } { }
+}
+
+\newpagestyle { simple }[ \color{ uq purple } ]{
+    \sethead { \sffamily\projectTag }{ }{ }
+    \setfoot { }{ \thepage }{ }
+}
+
+\newpagestyle { fancy }[ \color{ uq purple } ]{
+    \sethead { \projectTag    }{ }{ \sectiontitle }
+    \setfoot { \The{document} }{ }{ \thepage }
+}
+
+%% ============================================================================
+
+
+
+%% ============================ Graphical Elements ============================
+
+\RequirePackage { tikz }
+\RequirePackage { svg  }
+
+%% ----------------------------------------------------------------------------
+
+\RenewDocumentCommand \maketitle { } {
+
+    \thispagestyle { title }
+
+    \begin{tikzpicture}[ remember~picture, overlay ]
+        % Tweak the UQ Purple to produce the "dark sky" effect
+        \colorlet { uq purple }{ uq purple!60!black }
+
+        \node ( banner ) at ([ yshift=-2mm ] current~page . north ) [
+            anchor = north, fill = uq purple,
+            minimum~width = ( \paperwidth-4mm ), minimum~height = 36mm,
+        ] {};
+
+        \node at ( banner . center ) {
+            { \transparent{ 0.45 } \includesvg[ width=\paperwidth, inkscapearea=page ]{ images/starheader.svg } }
+        };
+
+        \shade [ shading=uq gradient east, path~fading=west ] ( banner . north~west ) rectangle ( banner . south~east );
+
+        \begin { scope }[ outer~sep = 6mm ]
+            % UQ Space Logo
+            \node [ anchor=west ] at ( banner . west ){ \includesvg [ height=20mm ]{ packages/uqspace-logo.svg } };
+            % Title Block
+            \node [ anchor=east ] at ( banner . east ){ \parbox { 0.6\linewidth }{
+                \sffamily \raggedleft \large \color { white }
+                \projectTag \\
+                \The{authors}
+            } };
+        \end { scope }
+
+    \end{tikzpicture}
+
+    % Very much a heuristic measurement
+    \vspace* { 14mm }
+}
+
+%% ============================================================================
+
+
+
+%% ==================== Modification of Existing Commands =====================
+
+% Required package information
+%
+%   etoolbox -> Toolbox of commands for creating more complex macros, and
+%               hooking onto internal LaTeX and TeX macros.
+
+%% ---------------------------------------------------------------------------
+
+\RequirePackage { etoolbox }
+
+%% ---------------------------------------------------------------------------
+
+% --- Default footnotesize font within tables
+
+\AtBeginEnvironment  { tabular } \small
+
+
+% --- Reduction of spacing after tables and figures
+
+\AfterEndEnvironment { table   } { \vspace { -2ex } }
+\AfterEndEnvironment { figure  } { \vspace { -2ex } }
+
+
+% --- Rename section label, and change numbering at \appendix
+
+\appto \appendix {
+    \RenewDocumentCommand \titleprefix { } { App.~ }
+    \setsecnum{A.I.i}
+}
+
+%% ============================================================================
+
+
+
+
+
+%% ============================================================================
+%%                     NEW CUSTOM COMMANDS & ENVIRONMENTS
+%% ============================================================================
+
+%% -------------------------- Abstract Environment ----------------------------
+
+% --- Formats the abstract paragraph
+
+\RenewDocumentEnvironment { abstract }{ }{
+    \vspace{3ex}
+    \hfill
+    \begin { minipage }{ 0.9\linewidth }
+    \small \itshape
+    \textcolor { uq purple }{ \scshape\sffamily\bfseries Abstract: \enspace }
+}{
+    \end { minipage }
+    \hfill
+    \vspace{5ex}
+}
+
+%% ------------- Acknowledgements and Contributions Environments --------------
+
+% --- Temporarily reformatted \section
+
+\NewDocumentCommand \underlinedTitle { s O{#3} m }{
+    \group_begin:
+    \titleformat \section
+        { \color {subsection} \LARGE \bfseries}
+        { \thetitle \quad }
+        { 2em }
+        { \vspace{1em} \filcenter }
+        [\titlerule\relax]
+    \IfBooleanTF { #1 }
+        { \section*{#3} }
+        { \section[#2]{#3} }
+    \group_end:
+}
+
+
+% --- Formats the acknowledgements paragraph
+
+\NewDocumentEnvironment { acknowledgements }{ }{
+    \hfill
+    \begin{minipage}{0.8\linewidth}
+        \underlinedTitle*{Acknowledgements}\vspace{0.25em}
+        \begin{center}
+}{
+        \end{center}
+    \end{minipage}
+    \hfill
+}
+
+
+% --- Formats the contributions list. Takes an optional number
+%     of columns to align to, with the default being 2.
+
+\NewDocumentEnvironment { contributions } { O{2} m } {
+    \hfill
+    \begin{minipage}{#2}
+        \begin{multicols}{#1}[\underlinedTitle*{Contributions}]
+            \centering
+}{
+        \end{multicols}
+    \end{minipage}
+    \hfill
+}
+
+%% ---------------------------- Invisible Sections ----------------------------
+
+\NewDocumentCommand \invisibleSection { O{#2} m }{
+    \phantomsection
+    \sectionmark { #2 }
+    \refstepcounter { section }
+    \addcontentsline { toc }{ section }{
+        \protect \numberline{ \thesection } \protect #1
+    }
+}
