@@ -8,8 +8,8 @@
 
 \ProvidesExplPackage
     {uqspace-article}                                           % - Name
-    {2022/12/17}                                                % - Date
-    {2.0.0}                                                     % - Version
+    {2023/10/16}                                                % - Date
+    {2.1.0}                                                     % - Version
     {Article class for use by UQ Space}                         % - Description
 
 %% ============================================================================
@@ -154,7 +154,7 @@
 
 %% ----------------------------------------------------------------------------
 
-% --- Set the numbering of sections to
+% --- Set the numbering of sections to 
 %     Sections         -> I, II, III, ...
 %     Sub-sections     -> A, B, C, ...
 %     Sub-sub-sections -> i, ii, iii, ...
@@ -245,35 +245,35 @@
 %% ----------------------------------------------------------------------------
 
 \RenewDocumentCommand \maketitle { } {
-
+    
     \thispagestyle { title }
-
+    
     \begin{tikzpicture}[ remember~picture, overlay ]
         % Tweak the UQ Purple to produce the "dark sky" effect
         \colorlet { uq purple }{ uq purple!60!black }
-
+        
         \node ( banner ) at ([ yshift=-2mm ] current~page . north ) [
             anchor = north, fill = uq purple,
-            minimum~width = ( \paperwidth-4mm ), minimum~height = 36mm,
+            minimum~width = ( \paperwidth-4mm ), minimum~height = 36mm, 
         ] {};
-
+        
         \node at ( banner . center ) {
             { \transparent{ 0.45 } \includesvg[ width=\paperwidth, inkscapearea=page ]{ images/starheader.svg } }
         };
-
+        
         \shade [ shading=uq gradient east, path~fading=west ] ( banner . north~west ) rectangle ( banner . south~east );
-
+    
         \begin { scope }[ outer~sep = 6mm ]
             % UQ Space Logo
             \node [ anchor=west ] at ( banner . west ){ \includesvg [ height=20mm ]{ packages/uqspace-logo.svg } };
             % Title Block
-            \node [ anchor=east ] at ( banner . east ){ \parbox { 0.6\linewidth }{
-                \sffamily \raggedleft \large \color { white }
-                \projectTag \\
+            \node [ anchor=east ] at ( banner . east ){ \parbox { 0.6\linewidth }{ 
+                \sffamily \raggedleft \large \color { white } 
+                \projectTag \\ 
                 \The{authors}
             } };
         \end { scope }
-
+    
     \end{tikzpicture}
 
     % Very much a heuristic measurement
@@ -300,6 +300,20 @@
 % --- Default footnotesize font within tables
 
 \AtBeginEnvironment  { tabular } \small
+
+
+% --- Set style for table headings
+
+\DeclareDocumentCommand \theadfont {  }{ \itshape }
+
+
+% --- Set default colour for table rules
+
+\pretocmd \tblr_set_hline:nnn {
+    \tl_if_empty:NT \l__tblr_hline_fg_tl {
+        \tl_set:Nn \l__tblr_hline_fg_tl { uq purple }
+    }
+}{ }{ }
 
 
 % --- Reduction of spacing after tables and figures

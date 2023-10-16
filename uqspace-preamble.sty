@@ -8,8 +8,8 @@
 
 \ProvidesExplPackage
   {uqspace-preamble}                                            % - Name
-  {2022/10/04}                                                  % - Date
-  {1.1.1}                                                       % - Version
+  {2023/10/16}                                                  % - Date
+  {2.0.0}                                                       % - Version
   {Report preamble list for use by UQ Space}                    % - Description
 
 %% ============================================================================
@@ -195,33 +195,49 @@
 
 %% ============================== Table packages ==============================
 
-\RequirePackage { array    }           % For customisation of tables
-\RequirePackage { booktabs }           % Horizontal rules in tables
-\RequirePackage { multirow }
-\RequirePackage { makecell }           % Robust table cells -> e.g. \makecell
-                                       % ~ Allows for line-breaks within cells
-                                       % ~ Use \thead{...} for column names
-
+\RequirePackage { tabularray     }     % Replaces `array' as the default table
+                                       % Contains a *lot* of functionality, and
+                                       % makes the `makecell' package redundant
+                                       
 \RequirePackage { rotating       }     % Rotate cells with \begin{sideways}...
-\RequirePackage { longtable      }     % Tables that go over multiple pages
 \RequirePackage { threeparttable }     % Tables that allow for notes below
 \RequirePackage { tablefootnote  }     % Allows for footnotes within tables
 
 %% ------------------------------ Table commands ------------------------------
 
-\robustify    \thead
-\renewcommand \theadfont { \itshape }
-\renewcommand \arraystretch { 1.2 }    % Spread rows out by 20%
+% Load libraries from tabularray for easy compatibility. 
+% Replaces the need for the `booktabs' package.
+\UseTblrLibrary { amsmath, booktabs, siunitx } 
 
-\newcolumntype { C }[ 1 ]{ >{ \Centering\arraybackslash   } m { #1 } }
-\newcolumntype { R }[ 1 ]{ >{ \RaggedLeft\arraybackslash  } m { #1 } }
-\newcolumntype { L }[ 1 ]{ >{ \RaggedRight\arraybackslash } m { #1 } }
+% Default values for tblr environments
+\SetTblrOuter { expand  = \thead }  % Expand \thead to get cell formats
+\SetTblrInner { stretch = 1.2    }
 
-\newcolumntype { P }[ 1 ]{ >{ \RaggedRight\arraybackslash } p { #1 } }
-\newcolumntype { B }[ 1 ]{ >{ \RaggedRight\arraybackslash } b { #1 } }
+% Simple column defaults for paragraphs
+% NOTE: Use h instead of t to get better alignment
+\NewColumnType { L }[ 1 ]{ Q[ h, l, #1 ] }
+\NewColumnType { R }[ 1 ]{ Q[ h, r, #1 ] }
+\NewColumnType { C }[ 1 ]{ Q[ h, c, #1 ] }
 
-\newcolumntype { E }[ 1 ]{ >{ \begin{tblEnum} } L { #1 } <{ \end{tblEnum} } }
-\newcolumntype { I }[ 1 ]{ >{ \begin{tblItem} } L { #1 } <{ \end{tblItem} } }
+% Itemize and Enumerate column types
+\NewColumnType { I }[ 2 ][  ]{ Q[ h, l, #2, preto={\begin{softlist}{tblItem}[#1]}, appto=\end{softlist} ] }
+\NewColumnType { E }[ 2 ][  ]{ Q[ h, l, #2, preto={\begin{softlist}{tblEnum}[#1]}, appto=\end{softlist} ] }
+
+% Define mock commands for \thead and similar
+% NOTE: Must use \newcommand, as \NewExpandableDocumentCommand requires full expansion
+\newcommand \thead [ 1 ]{ 
+    \SetRow  { abovesep = 6pt, belowsep = 6pt } 
+    \SetCell { c, m } 
+    { \theadfont \theadset #1 }
+}   
+% Defaults only
+\newcommand \theadfont { \footnotesize }
+\newcommand \theadset  { }
+
+% If we wish to override all `tabular` environments to new tblr environment
+\RenewDocumentEnvironment { tabular }{ m +b }
+    { \begin{tblr}{#1} #2 }
+    { \end{tblr} }
 
 %% ============================================================================
 
@@ -249,8 +265,6 @@
     label      =\arabic*.,
     labelwidth = 2.5ex,
     before*    ={\mbox{}\vspace{-\baselineskip}},
-    before*    =\preto\thead{\item[]},
-    after      =\vspace{-\baselineskip}
 }
 
 % --- Create itemize for within tables
@@ -261,8 +275,6 @@
     labelwidth = 2.5ex,
     label      =\textbullet,
     before*    ={\mbox{}\vspace{-\baselineskip}},
-    before*    =\preto\thead{\item[]},
-    after      =\vspace{-\baselineskip}
 }
 
 % --- Create description for List of Acronyms
@@ -274,6 +286,21 @@
     labelwidth = 5em,
     leftmargin = 6.5em,
     itemindent = 0pt,
+}
+
+% --- Create a "soft" list, which only enables if the first token is \item
+%     Takes the list environment to enable as the first argument
+\NewDocumentEnvironment { softlist }{ m O{} +b }{
+    \bool_set_false:N \l_tmpa_bool
+    \peek_meaning:NT \item {
+        \bool_set_true:N \l_tmpa_bool
+        \begin{#1}[#2]
+    }
+    #3
+}{
+    \bool_if:NT \l_tmpa_bool {
+        \end{#1}
+    }
 }
 
 % \DeclareAcroListStyle { mystyle }{ list }{ list = acronyms }

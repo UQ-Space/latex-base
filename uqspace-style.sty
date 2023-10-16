@@ -8,8 +8,8 @@
 
 \ProvidesExplPackage
     {uqspace-style}                                             % - Name
-    {2021/03/01}                                                % - Date
-    {2.3.2}                                                     % - Version
+    {2023/10/16}                                                % - Date
+    {2.4.0}                                                     % - Version
     {Styling package for UQ Space Reports}                      % - Description
 
 
@@ -364,6 +364,20 @@
 % --- Default small font within tables
 
 \AtBeginEnvironment { tabular } \small
+
+
+% --- Set style for table headings
+
+\DeclareDocumentCommand \theadfont {  }{ \itshape }
+
+
+% --- Set default colour for table rules
+
+\pretocmd \tblr_set_hline:nnn {
+    \tl_if_empty:NT \l__tblr_hline_fg_tl {
+        \tl_set:Nn \l__tblr_hline_fg_tl { uq purple }
+    }
+}{ }{ }
 
 
 % --- Reduction of spacing after tables and figures
