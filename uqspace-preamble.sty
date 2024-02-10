@@ -320,15 +320,24 @@
 \acsetup { list/template = description, list/name = Nomenclature }
 
 
-\str_new:N  \req_prefix_code_str
-\str_set:Nn \req_prefix_code_str { NULL }
+\str_new:N \req_prefix_code_str
 
-\NewDocumentEnvironment { requirements }{ o }{   
-    \IfValueT { #1 }{ \str_set:Nn \req_prefix_code_str {  #1  } }
-    \begin { reqenum }
+\NewDocumentEnvironment { requirements }{ O{} m }{
+    \str_if_empty:NF \req_prefix_code_str 
+        { \msg_warning:nn { Requirements }{ Cannot~change~requirement~prefix~in~subrequirements }  }
+    \str_set:Nn \req_prefix_code_str {  #2  }
+    \begin { subrequirements }[ #1 ]
 }{
-    \end   { reqenum } 
-    \IfValueT { #1 }{ \str_set:Nn \req_prefix_code_str { NULL } }
+    \end   { subrequirements } 
+    \str_clear:N \req_prefix_code_str
+}
+
+\NewDocumentEnvironment { subrequirements }{ O{} }{
+    \str_if_empty:NT \req_prefix_code_str 
+        { \msg_error:nn { Requirements }{ Subrequirements~must~exist~within~parent~requirement }  }
+    \begin { reqenum }[ #1 ]
+}{
+    \end   { reqenum }
 }
 
 \tl_new:N  \requirement_format_tl
