@@ -122,9 +122,12 @@
   amsthm,  amsfonts
 }
 \RequirePackage[                       % Consistent formatting of SI Units
-  per-mode=symbol,                     % ~ e.g. \SI{8314}{\kJ\per\kg\per\K},
+  per-mode=symbol,                     % ~ e.g. \qty{8314}{\kJ\per\kg\per\K},
   separate-uncertainty=true,           % ~      \num{1e6}, \ang{45}, etc...
-  multi-part-units=single
+  multi-part-units=single, 
+  reset-text-series=false,
+  reset-text-shape=false,
+  mode=match
 ]               { siunitx      }
 \RequirePackage { mathtools    }       % Space tweaking within maths
 \RequirePackage { chemformula  }       % Chemical equations -> e.g. \ch{H20}
@@ -195,18 +198,16 @@
 
 %% ============================== Table packages ==============================
 
-\RequirePackage { tabularray     }     % Replaces `array' as the default table
-                                       % Contains a *lot* of functionality, and
-                                       % makes the `makecell' package redundant
-                                       
+\RequirePackage { tabularray }         % For customisation of tables
+
 \RequirePackage { rotating       }     % Rotate cells with \begin{sideways}...
+\RequirePackage { longtable      }     % Tables that go over multiple pages
 \RequirePackage { threeparttable }     % Tables that allow for notes below
 \RequirePackage { tablefootnote  }     % Allows for footnotes within tables
 
 %% ------------------------------ Table commands ------------------------------
 
-% Load libraries from tabularray for easy compatibility. 
-% Replaces the need for the `booktabs' package.
+% Load libraries from tabularray for easy compatibility
 \UseTblrLibrary { amsmath, booktabs, siunitx } 
 
 % Default values for tblr environments
@@ -220,8 +221,20 @@
 \NewColumnType { C }[ 1 ]{ Q[ h, c, #1 ] }
 
 % Itemize and Enumerate column types
-\NewColumnType { I }[ 2 ][  ]{ Q[ h, l, #2, preto={\begin{softlist}{tblItem}[#1]}, appto=\end{softlist} ] }
-\NewColumnType { E }[ 2 ][  ]{ Q[ h, l, #2, preto={\begin{softlist}{tblEnum}[#1]}, appto=\end{softlist} ] }
+\NewColumnType { I }[ 2 ][  ]{ 
+    Q[ 
+        h, l, #2, 
+        preto={\begin{softlist}{tblItem}[#1]}, 
+        appto={\end{softlist}} 
+    ] 
+}
+\NewColumnType { E }[ 2 ][  ]{ 
+    Q[ 
+        h, l, #2, 
+        preto={\begin{softlist}{tblEnum}[#1]}, 
+        appto={\end{softlist}} 
+    ] 
+}
 
 % Define mock commands for \thead and similar
 % NOTE: Must use \newcommand, as \NewExpandableDocumentCommand requires full expansion
@@ -235,8 +248,8 @@
 \newcommand \theadset  { }
 
 % If we wish to override all `tabular` environments to new tblr environment
-\RenewDocumentEnvironment { tabular }{ m +b }
-    { \begin{tblr}{#1} #2 }
+\RenewDocumentEnvironment { tabular }{ O{} m +b }
+    { \begin{tblr}[#1]{#2} #3 }
     { \end{tblr} }
 
 %% ============================================================================
@@ -305,6 +318,36 @@
 
 % \DeclareAcroListStyle { mystyle }{ list }{ list = acronyms }
 \acsetup { list/template = description, list/name = Nomenclature }
+
+
+\str_new:N  \req_prefix_code_str
+\str_set:Nn \req_prefix_code_str { NULL }
+
+\NewDocumentEnvironment { requirements }{ o }{   
+    \IfValueT { #1 }{ \str_set:Nn \req_prefix_code_str {  #1  } }
+    \begin { reqenum }
+}{
+    \end   { reqenum } 
+    \IfValueT { #1 }{ \str_set:Nn \req_prefix_code_str { NULL } }
+}
+
+\tl_new:N  \requirement_format_tl
+\tl_set:Nn \requirement_format_tl { \textit }
+\NewDocumentCommand \requirement { m }{
+    \item \requirement_format_tl { #1 }
+}
+
+\SetLabelAlign { fixedwidth }{ \hfil\llap{\makebox[\labelwidth][l]{#1}} }
+
+\newlist  { reqenum }{ enumerate }{ 3 }
+\setlist  [ reqenum ]{ 
+    label=\texttt{\req_prefix_code_str - \arabic*}, 
+    align=fixedwidth, labelsep*=0pt, labelwidth=!
+}
+\setlist* [ reqenum, 1 ]{ leftmargin=20mm, labelindent=0pt, itemsep=5pt }
+\setlist* [ reqenum, 2 ]{ label*=\texttt{.\arabic*}, leftmargin=5mm, labelindent=-20mm }
+\setlist* [ reqenum, 3 ]{ label*=\texttt{.\arabic*}, leftmargin=5mm, labelindent=-25mm }
+
 
 %% ============================================================================
 
